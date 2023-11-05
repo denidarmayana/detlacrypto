@@ -5,7 +5,7 @@ class Home extends MY_Controller {
 	function __construct(){
         parent::__construct();
 		if(!isset($_SESSION['logged_in'])){
-			redirect(site_url('auth/login'));
+			redirect(site_url('auth'));
 		}
 	}
 	
