@@ -10,8 +10,8 @@ class Home extends MX_Controller
 	{
 		parent::__construct();
 		date_default_timezone_set("Asia/Jakarta");
-		$this->load->model("Home_model");
-		$this->home_model->cekSession();
+		$this->load->model("Home_model",'app');
+		$this->app->cekSession();
 	}
 	public function index()
 	{

@@ -20,28 +20,37 @@ class Auth extends MX_Controller
 	{
 		$this->load->view("register");
 	}
-	public function act_login()
+	public function action()
 	{
-		$client = new WebSocket\Client("ws://deltacrypto.biz.id:6969");
-		$data = [
-			'method'=>"auth",
-			'email'=>"deni020988@gmail.com",
-			'password'=>"deni020988"
-		];
-		$client->text(json_encode($data));
-		 
-		while (true) {
-		    try {
-		        $message = $client->receive();
-		        print_r($message);
-		        echo "\n";
-		 
-		      } catch (\WebSocket\ConnectionException $e) {
-		        // Possibly log errors
-		        print_r("Error: ".$e->getMessage());
-		    }
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => 'https://api.pasino.io/account/get-socket-token',
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => '',
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 0,
+		  CURLOPT_FOLLOWLOCATION => true,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => 'POST',
+		  CURLOPT_POSTFIELDS =>'{
+		    "token":"'.$this->input->post("token").'"
+		}',
+		  CURLOPT_HTTPHEADER => array(
+		    'Content-Type: application/json'
+		  ),
+		));
+		$response = curl_exec($curl);
+		curl_close($curl);
+		$row = json_decode($response);
+		if ($row->success == true) {
+			$this->session->set_userdata([
+				'login'=>TRUE,
+				'email'=>$this->input->post("email"),
+				'token'=>$this->input->post("token"),
+				'socket'=>$row->socket_token,
+			]);
 		}
-		$client->close();
+		
 	}
 	
 }

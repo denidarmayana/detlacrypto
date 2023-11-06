@@ -13,7 +13,7 @@
   <body>
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-md-4 col-9">
+            <div class="col-md-4 col-10">
                 <div class="card card-login">
                     <div class="card-body">
                         <h5 class="card-title mb-4">Login</h5>

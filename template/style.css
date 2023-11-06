@@ -7,9 +7,11 @@ body {
     border: 1px solid #7f8c8d;
     border-radius: 5px;
 }
+.area-trading{
+    font-weight: 11px;
+}
 .card-title{
     width: 100%;
-    text-align: center;
 }
 .form-control{
     border: 1px solid #2c3e50;
