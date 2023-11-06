@@ -10,14 +10,14 @@ class Home extends MY_Controller {
 	}
 	
 	function index(){
-		redirect(site_url('home/dashboard'));
+		$this->load->view("home");
 	}
-	
-	function dashboard(){
-		
-	}
-	
-	private function penjualan_daily($bulanan = false){
-		
+	public function save_token()
+	{
+		$this->db->insert("token",[
+			'username'=>$this->session->userdata("username"),
+			'token'=>$this->session->userdata("username"),
+			'socket'=>$this->input->post("socket"),
+		]);
 	}
 }
