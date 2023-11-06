@@ -15,6 +15,16 @@ class ComposerStaticInit20fad51902f91e7fd3039e016a6556b5
         array (
             'chriskacerguis\\RestServer\\' => 26,
         ),
+        'W' => 
+        array (
+            'WebSocket\\' => 10,
+        ),
+        'P' => 
+        array (
+            'Psr\\Log\\' => 8,
+            'Psr\\Http\\Message\\' => 17,
+            'Phrity\\Net\\' => 11,
+        ),
         'F' => 
         array (
             'Firebase\\JWT\\' => 13,
@@ -26,10 +36,31 @@ class ComposerStaticInit20fad51902f91e7fd3039e016a6556b5
         array (
             0 => __DIR__ . '/..' . '/chriskacerguis/codeigniter-restserver/src',
         ),
+        'WebSocket\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/textalk/websocket/lib',
+        ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/src',
+        ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+        ),
+        'Phrity\\Net\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phrity/net-uri/src',
+        ),
         'Firebase\\JWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
+    );
+
+    public static $fallbackDirsPsr4 = array (
+        0 => __DIR__ . '/..' . '/phrity/util-errorhandler/src',
     );
 
     public static $classMap = array (
@@ -41,6 +72,7 @@ class ComposerStaticInit20fad51902f91e7fd3039e016a6556b5
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit20fad51902f91e7fd3039e016a6556b5::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit20fad51902f91e7fd3039e016a6556b5::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInit20fad51902f91e7fd3039e016a6556b5::$fallbackDirsPsr4;
             $loader->classMap = ComposerStaticInit20fad51902f91e7fd3039e016a6556b5::$classMap;
 
         }, null, ClassLoader::class);

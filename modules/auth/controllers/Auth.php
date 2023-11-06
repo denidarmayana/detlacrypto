@@ -20,5 +20,28 @@ class Auth extends MX_Controller
 	{
 		$this->load->view("register");
 	}
+	public function act_login()
+	{
+		$client = new WebSocket\Client("ws://deltacrypto.biz.id:6969");
+		$data = [
+			'method'=>"auth",
+			'email'=>"deni020988@gmail.com",
+			'password'=>"deni020988"
+		];
+		$client->text(json_encode($data));
+		 
+		while (true) {
+		    try {
+		        $message = $client->receive();
+		        print_r($message);
+		        echo "\n";
+		 
+		      } catch (\WebSocket\ConnectionException $e) {
+		        // Possibly log errors
+		        print_r("Error: ".$e->getMessage());
+		    }
+		}
+		$client->close();
+	}
 	
 }
