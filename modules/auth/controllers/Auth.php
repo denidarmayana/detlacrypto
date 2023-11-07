@@ -43,16 +43,25 @@ class Auth extends MX_Controller
 		curl_close($curl);
 		$row = json_decode($response);
 		if ($row->success == true) {
-			$row = $this->db->get_where("members",['email'=>$this->input->post("email")])->row();
+			$rows = $this->db->get_where("members",['email'=>$this->input->post("email")])->row();
 			$this->session->set_userdata([
 				'login'=>TRUE,
-				'username'=>$row->username,
-				'email'=>$user->row,
+				'username'=>$rows->username,
+				'email'=>$rows->email,
 				'token'=>$this->input->post("token"),
 				'socket'=>$row->socket_token,
 			]);
+			$data = [
+				'code'=>200,
+				'message'=>$row->message
+			];
+		}else{
+			$data = [
+				'code'=>203,
+				'message'=>$row->message
+			];
 		}
-		
+		echo json_encode($data);
 	}
 	public function registration()
 	{

@@ -72,7 +72,14 @@
               url: "./auth/action",
               data: "email=" + username+"&token="+json.token,
               success: function(html) {
-                window.location.href="./"
+                console.log(html)
+                var jsons = JSON.parse(html)
+                if (jsons.code == 200) {
+                  window.location.href="./"
+                }else{
+                  toastr.error(jsons.message)
+                }
+                
               }
             });
           }else{
