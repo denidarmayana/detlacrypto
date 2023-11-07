@@ -61,18 +61,22 @@
     <script type="text/javascript">  
       $("#login").submit(function() {
         var username = $("#username").val()
+        var email = $("#email").val()
         var password = $("#password").val()
+        var reff = $("#reff").val()
         $("#btn_login").hide()
         $("#loading").show()
         const socket = new WebSocket('ws://deltacrypto.biz.id:6969');
         socket.onopen = function (event) {
           console.log('Koneksi terbuka');
-          socket.send(JSON.stringify({ method:"auth", email:username, password:password }))
+          socket.send(JSON.stringify({ method:"register", username:username,email:email, password:password }))
         };
 
         // Event saat menerima pesan
         socket.onmessage = function (event) {
           $("#username").val("")
+          $("#email").val("")
+          $("#reff").val("")
           $("#password").val("")
           $("#btn_login").show()
           $("#loading").hide()
@@ -81,8 +85,8 @@
             toastr.success(json.message)
             $.ajax({
               type: "POST",
-              url: "./auth/action",
-              data: "email=" + username+"&token="+json.token,
+              url: "./auth/registration",
+              data: "username=" + username+"&email="+email+"&password="+password+"&upline="+reff,
               success: function(html) {
                 window.location.href="./"
               }

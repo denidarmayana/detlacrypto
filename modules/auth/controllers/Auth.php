@@ -43,14 +43,37 @@ class Auth extends MX_Controller
 		curl_close($curl);
 		$row = json_decode($response);
 		if ($row->success == true) {
+			$row = $this->db->get_where("members",['email'=>$this->input->post("email")])->row();
 			$this->session->set_userdata([
 				'login'=>TRUE,
-				'email'=>$this->input->post("email"),
+				'username'=>$row->username,
+				'email'=>$user->row,
 				'token'=>$this->input->post("token"),
 				'socket'=>$row->socket_token,
 			]);
 		}
 		
+	}
+	public function registration()
+	{
+		$input = $this->input->post();
+		$cek_upline =  $this->db->get_where("members",['email'=>$input['upline']])->num_rows();
+		if ($cek_upline == 0) {
+			$upline = "delta";
+		}else{
+			$upline = $input['upline'];
+		}
+		$this->db->insert('members',[
+			'email'=>$input['email'],
+			'username'=>$input['username'],
+			'password'=>$input['password'],
+			'upline'=>$upline
+		]);
+	}
+	public function logout()
+	{
+		$this->session->sess_destroy();
+		redirect("/");
 	}
 	
 }
