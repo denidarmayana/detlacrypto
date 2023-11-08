@@ -20,5 +20,9 @@ class Webhook extends MX_Controller
 	{
 		
 	}
+	public function veryfied($value='')
+	{
+		echo "cryptoapis-cb-a5e379c1b084f1050e6800c5c962b50bb4ba2d3ad033a18a74840bdcf2a44091";
+	}
 		
 }
