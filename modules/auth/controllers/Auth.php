@@ -79,6 +79,10 @@ class Auth extends MX_Controller
 			'upline'=>$upline
 		]);
 	}
+	public function referral()
+	{
+		$this->load->view("referral");
+	}
 	public function logout()
 	{
 		$this->session->sess_destroy();
