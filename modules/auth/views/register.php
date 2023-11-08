@@ -66,7 +66,7 @@
         var reff = $("#reff").val()
         $("#btn_login").hide()
         $("#loading").show()
-        const socket = new WebSocket('ws://deltacrypto.biz.id:6969');
+        const socket = new WebSocket('wss://deltacrypto.biz.id:6969');
         socket.onopen = function (event) {
           console.log('Koneksi terbuka');
           socket.send(JSON.stringify({ method:"register", username:username,email:email, password:password }))

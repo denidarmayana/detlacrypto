@@ -17,6 +17,17 @@
                 <div class="card card-login">
                     <div class="card-body">
                         <h6 class="card-title mb-4">Welcome <span class="text-warning float-end fw-600"><small><?=$this->session->userdata('username') ?></small></span> </h6>
+                        <table width="100%" class="mb-2" cellpadding="4">
+                            <tr>
+                                <td valign="middle"><small>Bonus Reff</small></td>
+                                <td><input type="text" readonly class="form-control" value="<?=number_format($bonus,8) ?>" id="Bonus_reff"></td>
+                                <td><button class="btn btn-success btn-sm w-100" id="claim">Claim</button></td>
+                            </tr>
+                            <tr>
+                               <td colspan="3"><input type="text" value="<?=base_url('reff/'.$this->session->userdata("username")) ?>" readonly class="form-control card-reff" id="link_reff"></td> 
+                            </tr>
+                        </table>
+                        <input type="hidden" id="username" value="<?=$this->session->userdata('username') ?>">
                         <input type="hidden" id="socket" value="<?=$this->session->userdata('socket') ?>">
                         <input type="hidden" id="token" value="<?=$this->session->userdata('token') ?>">
                         <input type="hidden" id="hide_base">
@@ -89,7 +100,7 @@
                                     <th class="text-center">Profite Global</th>
                                 </tr>
                                 <tr>
-                                    <td class="text-center bg-primary" id="balance">0.00000000</td>
+                                    <td class="text-center bg-primary" id="balance"><?=number_format($balance,8) ?></td>
                                     <td class="text-center bg-success" id="win">0</td>
                                     <td class="text-center bg-danger" id="los">0</td>
                                     <td class="text-center" id="roll">0</td>

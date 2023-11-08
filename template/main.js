@@ -20,9 +20,12 @@ const id_socket = document.getElementById('socket');
 const id_token = document.getElementById('token');
 const id_address = document.getElementById('address');
 const id_qrcode = document.getElementById('qrcode');
+const id_username = document.getElementById('username');
+const id_bonus_reff = document.getElementById('Bonus_reff');
+const id_link_reff = document.getElementById('link_reff');
 // composen
 
-id_hide_base.value = id_base_trade.value;
+
 
 //button
 const btn_start = document.getElementById('start');
@@ -30,22 +33,74 @@ const btn_stop = document.getElementById('stop_on_win');
 const btn_shoot = document.getElementById('shoot');
 const btn_reset = document.getElementById('reset');
 const btn_boom = document.getElementById('boom');
+const btn_claim = document.getElementById('claim');
 
-const socket = new WebSocket('ws://deltacrypto.biz.id:6969');
+id_link_reff.addEventListener('click', (event) => {
+	  id_link_reff.readOnly = true;
+ 	  id_link_reff.select();
+	  try {
+	    // Attempt to copy the selected text to the clipboard using the Clipboard API
+	    document.execCommand('copy');
+	    toastr.success("Link Reff copied to clipboard")
+	  } catch (err) {
+	    toastr.error('Unable to copy text: ' + err)
+	  }
+	  id_link_reff.readOnly = false;
+	  id_link_reff.setSelectionRange(0, 0);
+});
+
+btn_claim.addEventListener("click",(event)=>{
+	if (id_bonus_reff.value < 500) {
+		toastr.error("Minimum claim 500 TRX")
+	}else{
+		$.ajax({
+			type:"POST",
+			url:"./home/claim",
+			data:"username="+ id_username.value+"&amount="+id_bonus_reff.value,
+			success:function (data) {
+				var json = JSON.parse(data);
+				if (json.code == 200) {
+					toastr.success(json.message)
+					setTimeout(()=>{
+						window.location.href="./"
+					},1000)
+				}
+			}
+		})
+	}
+})
+
+const socket = new WebSocket('wss://deltacrypto.biz.id:6969');
+let balance_value = null;
 socket.onopen = function (event) {
-	console.log("SOCKET TERBUKA")
     socket.send(JSON.stringify({method:"balance",token:id_socket.value,coin:"TRX"}));
     socket.send(JSON.stringify({method:"address",token:id_token.value,coin:"TRX"}));
 };
 socket.onmessage = function (event) {
 	var json = JSON.parse(event.data)
 	if (json.action == "update_balance") {
-		id_balance.textContent = json.user_balance
+		balance_value = json.user_balance
+		if (balance_value != null) {
+			$.ajax({
+      			type: "POST",
+      			url: "./home/save_deposit",
+      			data: "username=" + id_username.value+"&balance="+balance_value+"&token="+id_token.value,
+      			success: function(html) {
+      			}
+  			})
+		}else{
+			setTimeout(()=>{
+				window.location.href="/"	
+			},5000)
+			
+		}
+		
 	}
 	if (json.address) {
 		id_address.value = json.address
 		id_qrcode.src = json.qr
 	}
+	
 }
 id_address.addEventListener('click', (event) => {
 	  id_address.readOnly = true;
@@ -53,7 +108,7 @@ id_address.addEventListener('click', (event) => {
 	  try {
 	    // Attempt to copy the selected text to the clipboard using the Clipboard API
 	    document.execCommand('copy');
-	    toastr.success("Text copied to clipboard")
+	    toastr.success("Wallet Address copied to clipboard")
 	  } catch (err) {
 	    toastr.error('Unable to copy text: ' + err)
 	  }
@@ -70,6 +125,7 @@ btn_boom.addEventListener("click",(event)=>{
 	id_hide_base.value = id_val_boom.value
 })
 btn_start.addEventListener('click', (event) => {
+	  id_hide_base.value = id_base_trade.value;
  	  startTrade();
 });
 function getChance(min,max) {
@@ -78,6 +134,8 @@ function getChance(min,max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 let is_trading = true
+let is_stop = false;
+let status_trade = null;
 
 function startTrade() {
 	if (id_base_trade.value > id_balance.textContent) {
@@ -129,18 +187,27 @@ function trading() {
       url: "./home/trading",
       data: "base=" + base+"&chance="+chance+"&profit="+profits+"&type="+type+"&chance="+chance,
       success: function(html) {
-        console.log(html)
-        if (is_trading) {
-	 		setTimeout(()=>{
-	 			trading()
-	 		},500)
- 		}
         var jsons = JSON.parse(html);
+        var new_profite = parseFloat(id_profite_global.textContent) + parseFloat(jsons.profite);
+        id_profite_global.textContent = parseFloat(new_profite).toFixed(8)
+        if (id_if_profit_global.value > 0) {
+        	if (id_if_profit_global.value == new_profite) {
+        		toastr.success("Global profit target achieved")
+        		is_trading = false
+        	}
+        }
+        var newBalance = parseFloat(id_balance.textContent) + parseFloat(jsons.profite);
+        id_balance.textContent = parseFloat(newBalance).toFixed(8)
+        if (newBalance < jsons.profite) {
+        	toastr.error()
+        	is_trading == false;
+        }
         const newRow = document.createElement('tr');
         const cell1 = document.createElement('td');
         const cell2 = document.createElement('td');
         const cell3 = document.createElement('td');
         if (jsons.status == 1) {
+        	status_trade = "win"
         	newRow.classList.add('bg-success');
         	is_win++;
         	lastWin = is_win;
@@ -148,17 +215,39 @@ function trading() {
 	        	lastLos = is_los
 	        }
         	is_los =0;
-        	if (is_win == if_win_reset.value) {
-        		id_hide_base.value = id_base_trade.value
+        	if (is_win <= if_win_reset.value) {
+        		if (id_hide_base.value >= id_profite_session.value) {
+			    	id_hide_base.value = id_base_trade.value
+			    }else{
+        			id_hide_base.value = id_base_trade.value
+        		}
+        	}else{
+        		var newBase = ((id_marti_win.value*parseFloat(jsons.base))/100)+parseFloat(jsons.base)
+        		if (id_hide_base.value >= id_profite_session.value) {
+			    	id_hide_base.value = id_base_trade.value
+			    }else{
+        			id_hide_base.value = parseFloat(newBase).toFixed(8)
+        		}
         	}
         	id_roll.classList.remove('bg-danger');
         	id_roll.classList.add('bg-success');
         	id_roll.textContent = is_win
+        	if (is_stop) {
+        		btn_start.textContent = 'Start';
+				btn_start.classList.remove('btn-danger');
+				btn_start.classList.add('btn-success');
+				is_trading = false;
+        	}
         }else{
+        	status_trade = "los"
         	newRow.classList.add('bg-danger');
-        	
         	var newBase = ((id_marti_los.value*parseFloat(jsons.base))/100)+parseFloat(jsons.base)
-        	id_hide_base.value = parseFloat(newBase).toFixed(8)
+        	if (id_hide_base.value >= id_profite_session.value) {
+		    	id_hide_base.value = id_base_trade.value
+		    }else{
+		    	id_hide_base.value = parseFloat(newBase).toFixed(8)	
+		    }
+        	
         	is_win= 0;
         	is_los++;
         	lastLos = is_los
@@ -166,7 +255,11 @@ function trading() {
 	        	lastWin = is_win;
 	        }
         	if (if_los_reset.value > 0) {
-        		id_hide_base.value = id_base_trade.value
+        		if (id_hide_base.value >= id_profite_session.value) {
+			    	id_hide_base.value = id_base_trade.value
+			    }else{
+        			id_hide_base.value = id_base_trade.value
+        		}
         	}
         	
         	id_roll.classList.remove('bg-success');
@@ -183,6 +276,14 @@ function trading() {
         newRow.appendChild(cell3);
         const firstRow = table_trading.firstChild;
         table_trading.insertBefore(newRow,firstRow);
+        if (is_trading) {
+	 		setTimeout(()=>{
+	 			trading()
+	 		},500)
+ 		}
       }
     });
 }
+btn_stop.addEventListener("click",(event)=>{
+	is_stop = true
+})
