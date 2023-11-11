@@ -235,6 +235,11 @@ function trading() {
         	toastr.error("Your don't have anought balance")
         	is_trading = false
         }
+        if (id_profite_global.textContent >= id_profite_session.value) {
+			    	id_hide_base.value = id_base_trade.value
+		    }else{
+		    	id_hide_base.value = parseFloat(newBase).toFixed(8)	
+		    }
         const newRow = document.createElement('tr');
         const cell1 = document.createElement('td');
         const cell2 = document.createElement('td');
@@ -245,19 +250,16 @@ function trading() {
         	is_win++;
         	lastWin = Math.max(lastWin, is_win);
         	is_los = 0;
-        	if (is_win <= if_win_reset.value) {
-        		if (id_hide_base.value >= id_profite_session.value) {
-			    	id_hide_base.value = id_base_trade.value
-			    }else{
-        			id_hide_base.value = id_base_trade.value
-        		}
+        	var newBase = ((id_marti_win.value*parseFloat(jsons.base))/100)+parseFloat(jsons.base)
+        	if (id_if_win_reset == 0) {
+        		id_hide_base.value = newBase
         	}else{
-        		var newBase = ((id_marti_win.value*parseFloat(jsons.base))/100)+parseFloat(jsons.base)
-        		if (id_hide_base.value >= id_profite_session.value) {
-			    	id_hide_base.value = id_base_trade.value
-			    }else{
-        			id_hide_base.value = parseFloat(newBase).toFixed(8)
-        		}
+        		if (is_win <= if_win_reset.value) {
+				    	id_hide_base.value = id_base_trade.value
+	        	}else{
+	        		
+	        		id_hide_base.value =newBase
+	        	}
         	}
         	id_roll.classList.remove('bg-danger');
         	id_roll.classList.add('bg-success');
@@ -274,20 +276,19 @@ function trading() {
         	status_trade = "los"
         	newRow.classList.add('bg-danger');
         	var newBase = ((id_marti_los.value*parseFloat(jsons.base))/100)+parseFloat(jsons.base)
-        	if (id_hide_base.value >= id_profite_session.value) {
-		    	id_hide_base.value = id_base_trade.value
-		    }else{
-		    	id_hide_base.value = parseFloat(newBase).toFixed(8)	
-		    }
+        	
         	is_win= 0;
         	is_los++;
-        	if (if_los_reset.value > 0) {
-        		if (id_hide_base.value >= id_profite_session.value) {
-			    	id_hide_base.value = id_base_trade.value
-			    }else{
-        			id_hide_base.value = id_base_trade.value
-        		}
+        	if (id_if_los_reset == 0) {
+        		id_hide_base.value = newBase
+        	}else{
+        		if (is_los <= id_if_los_reset.value) {
+				    	id_hide_base.value = id_base_trade.value
+	        	}else{
+	        		id_hide_base.value = newBase
+	        	}
         	}
+        	
         	
         	id_roll.classList.remove('bg-success');
         	id_roll.classList.add('bg-danger');
