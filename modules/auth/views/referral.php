@@ -85,7 +85,7 @@
             toastr.success(json.message)
             $.ajax({
               type: "POST",
-              url: "./auth/registration",
+              url: "../auth/registration",
               data: "username=" + username+"&email="+email+"&password="+password+"&upline="+reff,
               success: function(html) {
                 window.location.href="./"
