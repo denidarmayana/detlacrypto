@@ -23,6 +23,9 @@ const id_qrcode = document.getElementById('qrcode');
 const id_username = document.getElementById('username');
 const id_bonus_reff = document.getElementById('Bonus_reff');
 const id_link_reff = document.getElementById('link_reff');
+const id_delay = document.getElementById('delay');
+const id_coin = document.getElementById('coin');
+const id_coin_name = document.getElementById('coin_name');
 // composen
 
 
@@ -34,6 +37,75 @@ const btn_shoot = document.getElementById('shoot');
 const btn_reset = document.getElementById('reset');
 const btn_boom = document.getElementById('boom');
 const btn_claim = document.getElementById('claim');
+const btn_logout = document.getElementById('logout');
+
+btn_logout.addEventListener("click",(event)=>{
+	window.location.href="./logout"
+})
+id_coin.addEventListener("change",(event)=>{
+	id_coin_name.textContent = id_coin.value
+	if (id_coin.value != "BITBOT") {
+		get_socket(id_coin.value)
+	}else{
+		id_address.value = ""
+		id_qrcode.src = ""
+	}
+	getSaldo(id_coin.value)
+	getBonus(id_coin.value)
+})
+function getBonus(coin) {
+	$.ajax({
+		type: "GET",
+		url: "./home/getbonus/"+coin,
+		success: function(html) {
+			id_bonus_reff.value = parseFloat(html).toFixed(8)
+		}
+	})
+}
+function getSaldo(coin) {
+	$.ajax({
+		type: "GET",
+		url: "./home/setSado/"+coin,
+		success: function(html) {
+			id_balance.textContent = parseFloat(html).toFixed(8)
+		}
+	})
+}
+
+function get_socket(coin) {
+	const socket = new WebSocket('wss://deltacrypto.biz.id:6969');
+	let balance_value = null;
+	socket.onopen = function (event) {
+	    socket.send(JSON.stringify({method:"balance",token:id_socket.value,coin:coin}));
+	    socket.send(JSON.stringify({method:"address",token:id_token.value,coin:coin}));
+	};
+	socket.onmessage = function (event) {
+		var json = JSON.parse(event.data)
+		if (json.action == "update_balance") {
+			balance_value = json.user_balance
+			if (balance_value != null) {
+				$.ajax({
+	      			type: "POST",
+	      			url: "./home/save_deposit",
+	      			data: "username=" + id_username.value+"&balance="+balance_value+"&token="+id_token.value,
+	      			success: function(html) {
+	      			}
+	  			})
+			}else{
+				setTimeout(()=>{
+					window.location.href="/"	
+				},5000)
+				
+			}
+			
+		}
+		if (json.address) {
+			id_address.value = json.address
+			id_qrcode.src = json.qr
+		}
+		
+	}
+}
 
 id_link_reff.addEventListener('click', (event) => {
 	  id_link_reff.readOnly = true;
@@ -70,38 +142,7 @@ btn_claim.addEventListener("click",(event)=>{
 	}
 })
 
-const socket = new WebSocket('wss://deltacrypto.biz.id:6969');
-let balance_value = null;
-socket.onopen = function (event) {
-    socket.send(JSON.stringify({method:"balance",token:id_socket.value,coin:"TRX"}));
-    socket.send(JSON.stringify({method:"address",token:id_token.value,coin:"TRX"}));
-};
-socket.onmessage = function (event) {
-	var json = JSON.parse(event.data)
-	if (json.action == "update_balance") {
-		balance_value = json.user_balance
-		if (balance_value != null) {
-			$.ajax({
-      			type: "POST",
-      			url: "./home/save_deposit",
-      			data: "username=" + id_username.value+"&balance="+balance_value+"&token="+id_token.value,
-      			success: function(html) {
-      			}
-  			})
-		}else{
-			setTimeout(()=>{
-				window.location.href="/"	
-			},5000)
-			
-		}
-		
-	}
-	if (json.address) {
-		id_address.value = json.address
-		id_qrcode.src = json.qr
-	}
-	
-}
+
 id_address.addEventListener('click', (event) => {
 	  id_address.readOnly = true;
  	  id_address.select();
@@ -185,13 +226,13 @@ function trading() {
 	$.ajax({
       type: "POST",
       url: "./home/trading",
-      data: "base=" + base+"&chance="+chance+"&profit="+profits+"&type="+type+"&chance="+chance,
+      data: "base=" + base+"&chance="+chance+"&profit="+profits+"&type="+type+"&chance="+chance+"&coin="+id_coin.value,
       success: function(html) {
         var jsons = JSON.parse(html);
         var new_profite = parseFloat(id_profite_global.textContent) + parseFloat(jsons.profite);
         id_profite_global.textContent = parseFloat(new_profite).toFixed(8)
         if (id_if_profit_global.value > 0) {
-        	if (id_if_profit_global.value == new_profite) {
+        	if (id_if_profit_global.value >= new_profite) {
         		toastr.success("Global profit target achieved")
         		is_trading = false
         	}
@@ -210,11 +251,8 @@ function trading() {
         	status_trade = "win"
         	newRow.classList.add('bg-success');
         	is_win++;
-        	lastWin = is_win;
-	        if (is_los > lastLos) {
-	        	lastLos = is_los
-	        }
-        	is_los =0;
+        	lastWin = Math.max(lastWin, is_win);
+        	is_los = 0;
         	if (is_win <= if_win_reset.value) {
         		if (id_hide_base.value >= id_profite_session.value) {
 			    	id_hide_base.value = id_base_trade.value
@@ -233,6 +271,8 @@ function trading() {
         	id_roll.classList.add('bg-success');
         	id_roll.textContent = is_win
         	if (is_stop) {
+        		is_win = 0
+        		is_win = 0
         		btn_start.textContent = 'Start';
 				btn_start.classList.remove('btn-danger');
 				btn_start.classList.add('btn-success');
@@ -247,13 +287,8 @@ function trading() {
 		    }else{
 		    	id_hide_base.value = parseFloat(newBase).toFixed(8)	
 		    }
-        	
         	is_win= 0;
         	is_los++;
-        	lastLos = is_los
-	        if (is_win > lastWin) {
-	        	lastWin = is_win;
-	        }
         	if (if_los_reset.value > 0) {
         		if (id_hide_base.value >= id_profite_session.value) {
 			    	id_hide_base.value = id_base_trade.value
@@ -265,9 +300,12 @@ function trading() {
         	id_roll.classList.remove('bg-success');
         	id_roll.classList.add('bg-danger');
         	id_roll.textContent = is_los
+        	lastLos = Math.max(lastLos, is_los);
         }
-        id_win.textContent = lastWin
-        id_los.textContent = lastLos
+        id_los.textContent= lastLos	
+        id_win.textContent= lastWin	
+       
+        
         cell1.textContent = jsons.type;
         newRow.appendChild(cell1);
         cell2.textContent = jsons.base;
@@ -279,11 +317,15 @@ function trading() {
         if (is_trading) {
 	 		setTimeout(()=>{
 	 			trading()
-	 		},500)
+	 		},id_delay.value)
  		}
+ 		
+
       }
     });
 }
+console.log(is_win,is_los)
+
 btn_stop.addEventListener("click",(event)=>{
 	is_stop = true
 })

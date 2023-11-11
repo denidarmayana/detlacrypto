@@ -15,15 +15,30 @@ class Home extends MX_Controller
 	}
 	public function index()
 	{
-		$balance = $this->db->select_sum("balance")->get_where("deposit",['username'=>$this->session->userdata("username")])->row();
-		$trade = $this->db->select_sum("profite")->get_where("trading",['members'=>$this->session->userdata("username")])->row();
+		$this->load->view("home");
+	}
+	public function getbonus($coin)
+	{
+		$cek = $this->db->get_where("reabet",['receive'=>$this->session->userdata("username"),'status'=>0,'coin'=>$coin])->num_rows();
+		if ($cek != 0) {
+			$bonus_reff = $this->db->select_sum("amount")->get_where("reabet",['receive'=>$this->session->userdata("username"),'status'=>0,'coin'=>$coin])->row();
+			if ($bonus_reff) {
+				echo $bonus_reff->amount;
+			}else{
+				echo 0;
+			}
+		}else{
+			echo 0;
+		}
+		
+		
+	}
+	public function setSado($coin)
+	{
+		$balance = $this->db->select_sum("balance")->get_where("deposit",['username'=>$this->session->userdata("username"),'coin'=>$coin])->row();
+		$trade = $this->db->select_sum("profite")->get_where("trading",['members'=>$this->session->userdata("username"),'coin'=>$coin])->row();
 		$balances = $balance->balance+$trade->profite;
-		$bonus_reff = $this->db->select_sum("amount")->get_where("reabet",['receive'=>$this->session->userdata("username"),'status'=>0])->row();
-		$data = [
-			'balance'=>$balances,
-			'bonus'=>$bonus_reff->amount
-		];
-		$this->load->view("home",$data);
+		echo $balances;
 	}
 	public function trading()
 	{
@@ -49,12 +64,14 @@ class Home extends MX_Controller
 				'upline'=>$profile_reff,
 				'team'=>$profit_team,
 				'owner'=>$profit_owner,
-				'users'=>$profite_untuk_user
+				'users'=>$profite_untuk_user,
+				'coin'=>$input['chance'],
 			]);
 			$this->db->insert("reabet",[
 				'from'=>$this->session->userdata("username"),
 				'receive'=>$users->upline,
 				'amount'=>$profile_reff,
+				'coin'=>$input['chance'],
 			]);
 		}else{
 			$status = 0;
@@ -63,6 +80,7 @@ class Home extends MX_Controller
 		$this->db->insert("trading",[
 			'members'=>$this->session->userdata("username"),
 			'profite'=>$profit_val,
+			'coin'=>$input['chance'],
 		]);
 		echo json_encode([
 			'status'=>$status,

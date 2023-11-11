@@ -16,11 +16,11 @@
             <div class="col-md-11 col-12">
                 <div class="card card-login">
                     <div class="card-body">
-                        <h6 class="card-title mb-4">Welcome <span class="text-warning float-end fw-600"><small><?=$this->session->userdata('username') ?></small></span> </h6>
+                        <h6 class="card-title mb-4">Welcome <span class="text-warning float-end fw-600"><button class="btn btn-sm btn-danger" id="logout">Logout</button></span> </h6>
                         <table width="100%" class="mb-2" cellpadding="4">
                             <tr>
                                 <td valign="middle"><small>Bonus Reff</small></td>
-                                <td><input type="text" readonly class="form-control" value="<?=number_format($bonus,8) ?>" id="Bonus_reff"></td>
+                                <td><input type="text" readonly class="form-control"  id="Bonus_reff"></td>
                                 <td><button class="btn btn-success btn-sm w-100" id="claim">Claim</button></td>
                             </tr>
                             <tr>
@@ -32,6 +32,21 @@
                         <input type="hidden" id="token" value="<?=$this->session->userdata('token') ?>">
                         <input type="hidden" id="hide_base">
                         <div class="area-trading">
+                            <div class="row mb-2">
+                                <div class="col-6">
+                                    <p class="form-label text-center m-0">Delay (ms)</p>
+                                    <input type="text" class="form-control" value="500" id="delay">
+                                </div>
+                                <div class="col-6">
+                                    <p class="form-label text-center m-0">Coin</p>
+                                    <select class="form-control" id="coin">
+                                        <option value="0">Select Coin</option>
+                                        <option>BITBOT</option>
+                                        <option>TRX</option>
+                                        <option>DOGE</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="row mb-2">
                                 <div class="col-6">
                                     <p class="form-label text-center m-0">Base Trade</p>
@@ -90,6 +105,7 @@
                                     <input type="text" class="form-control" value="0" id="if_los_reset">
                                 </div>
                             </div>
+                             
                             <!-- row -->
                             <table width="100%" class="data-balance mb-2">
                                 <tr>
@@ -100,7 +116,7 @@
                                     <th class="text-center">Profite Global</th>
                                 </tr>
                                 <tr>
-                                    <td class="text-center bg-primary" id="balance"><?=number_format($balance,8) ?></td>
+                                    <td class="text-center bg-primary" id="balance">0.00000000</td>
                                     <td class="text-center bg-success" id="win">0</td>
                                     <td class="text-center bg-danger" id="los">0</td>
                                     <td class="text-center" id="roll">0</td>
@@ -112,7 +128,7 @@
                                     <button class="btn btn-success w-100" id="start">Start</button>
                                 </div>
                                 <div class="col-6">
-                                    <button class="btn btn-info w-100" id="stop_on_win">Stop on Wim</button>
+                                    <button class="btn btn-info w-100" id="stop_on_win">Stop on Win</button>
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -158,7 +174,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Deposit TRX</h1>
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Deposit <span id="coin_name"></span></h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
