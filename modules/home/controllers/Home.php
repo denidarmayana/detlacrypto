@@ -23,7 +23,12 @@ class Home extends MX_Controller
 		if ($cek != 0) {
 			$bonus_reff = $this->db->select_sum("amount")->get_where("reabet",['receive'=>$this->session->userdata("username"),'status'=>0,'coin'=>$coin])->row();
 			if ($bonus_reff) {
-				echo $bonus_reff->amount;
+				if ($bonus_reff->amount > 0) {
+					echo $bonus_reff->amount;
+				}else{
+					echo 0;	
+				}
+				
 			}else{
 				echo 0;
 			}
