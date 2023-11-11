@@ -194,6 +194,9 @@ function startTrade() {
 		btn_start.classList.remove('btn-danger');
 		btn_start.classList.add('btn-success');
 		is_trading = false;
+		id_win.textContent = 0;
+		id_los.textContent = 0;
+		id_roll.textContent = 0;
 	}
  	
 }
@@ -224,16 +227,22 @@ function trading() {
         var new_profite = parseFloat(id_profite_global.textContent) + parseFloat(jsons.profite);
         id_profite_global.textContent = parseFloat(new_profite).toFixed(8)
         if (id_if_profit_global.value > 0) {
-        	if (id_if_profit_global.value >= new_profite) {
+        	if (id_if_profit_global.value <= id_profite_global.textContent) {
         		toastr.success("Global profit target achieved")
-        		is_trading = false
+        		btn_start.textContent = 'Start';
+						btn_start.classList.remove('btn-danger');
+						btn_start.classList.add('btn-success');
+						is_trading = false;
         	}
         }
         var newBalance = parseFloat(id_balance.textContent) + parseFloat(jsons.profite);
         id_balance.textContent = parseFloat(newBalance).toFixed(8)
         if (id_balance.textContent < jsons.profite) {
         	toastr.error("Your don't have anought balance")
-        	is_trading = false
+        	btn_start.textContent = 'Start';
+					btn_start.classList.remove('btn-danger');
+					btn_start.classList.add('btn-success');
+					is_trading = false;
         }
         if (id_profite_global.textContent >= id_profite_session.value) {
 			    	id_hide_base.value = id_base_trade.value
@@ -295,8 +304,15 @@ function trading() {
         	id_roll.textContent = is_los
         	lastLos = Math.max(lastLos, is_los);
         }
-        id_los.textContent= lastLos	
-        id_win.textContent= lastWin	
+        if (trading) {
+        	id_los.textContent= lastLos	
+        	id_win.textContent= lastWin	
+        }else{
+        	id_win.textContent = 0;
+					id_los.textContent = 0;
+					id_roll.textContent = 0;
+        }
+        
        
         
         cell1.textContent = jsons.type;
