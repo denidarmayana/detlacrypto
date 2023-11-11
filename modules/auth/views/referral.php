@@ -88,7 +88,7 @@
               url: "../auth/registration",
               data: "username=" + username+"&email="+email+"&password="+password+"&upline="+reff,
               success: function(html) {
-                window.location.href="./"
+                window.location.href="../"
               }
             });
           }else{
