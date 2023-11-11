@@ -156,15 +156,7 @@ id_address.addEventListener('click', (event) => {
 	  id_address.readOnly = false;
 	  id_address.setSelectionRange(0, 0);
 });
-btn_shoot.addEventListener("click",(event)=>{
-	id_hide_base.value = id_val_shoot.value
-})
-btn_reset.addEventListener("click",(event)=>{
-	id_hide_base.value = id_base_trade.value
-})
-btn_boom.addEventListener("click",(event)=>{
-	id_hide_base.value = id_val_boom.value
-})
+
 btn_start.addEventListener('click', (event) => {
 	  id_hide_base.value = id_base_trade.value;
  	  startTrade();
@@ -239,9 +231,9 @@ function trading() {
         }
         var newBalance = parseFloat(id_balance.textContent) + parseFloat(jsons.profite);
         id_balance.textContent = parseFloat(newBalance).toFixed(8)
-        if (newBalance < jsons.profite) {
-        	toastr.error()
-        	is_trading == false;
+        if (id_balance.textContent < jsons.profite) {
+        	toastr.error("Your don't have anought balance")
+        	is_trading = false
         }
         const newRow = document.createElement('tr');
         const cell1 = document.createElement('td');
@@ -274,9 +266,9 @@ function trading() {
         		is_win = 0
         		is_win = 0
         		btn_start.textContent = 'Start';
-				btn_start.classList.remove('btn-danger');
-				btn_start.classList.add('btn-success');
-				is_trading = false;
+						btn_start.classList.remove('btn-danger');
+						btn_start.classList.add('btn-success');
+						is_trading = false;
         	}
         }else{
         	status_trade = "los"
@@ -316,7 +308,9 @@ function trading() {
         table_trading.insertBefore(newRow,firstRow);
         if (is_trading) {
 	 		setTimeout(()=>{
-	 			trading()
+	 			if (is_trading) {
+	 				trading()	
+	 			}
 	 		},id_delay.value)
  		}
  		
@@ -328,4 +322,23 @@ console.log(is_win,is_los)
 
 btn_stop.addEventListener("click",(event)=>{
 	is_stop = true
+})
+btn_shoot.addEventListener("click",(event)=>{
+	if (id_balance.textContent > id_val_shoot.value) {
+		id_hide_base.value = id_val_shoot.value
+	}else{
+		toastr.error("You Dont have anought balance")
+	}
+	
+})
+btn_reset.addEventListener("click",(event)=>{
+	id_hide_base.value = id_base_trade.value
+})
+btn_boom.addEventListener("click",(event)=>{
+	if (id_balance.textContent > id_val_boom.value) {
+		id_hide_base.value = id_val_boom.value	
+	}else{
+		toastr.error("You Dont have anought balance")
+	}
+	
 })
