@@ -65,13 +65,13 @@ class Home extends MX_Controller
 				'team'=>$profit_team,
 				'owner'=>$profit_owner,
 				'users'=>$profite_untuk_user,
-				'coin'=>$input['chance'],
+				'coin'=>$input['coin'],
 			]);
 			$this->db->insert("reabet",[
 				'from'=>$this->session->userdata("username"),
 				'receive'=>$users->upline,
 				'amount'=>$profile_reff,
-				'coin'=>$input['chance'],
+				'coin'=>$input['coin'],
 			]);
 		}else{
 			$status = 0;
@@ -80,7 +80,7 @@ class Home extends MX_Controller
 		$this->db->insert("trading",[
 			'members'=>$this->session->userdata("username"),
 			'profite'=>$profit_val,
-			'coin'=>$input['chance'],
+			'coin'=>$input['coin'],
 		]);
 		echo json_encode([
 			'status'=>$status,
