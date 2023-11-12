@@ -87,7 +87,7 @@ function get_socket(coin) {
 				$.ajax({
 	      			type: "POST",
 	      			url: "./home/save_deposit",
-	      			data: "username=" + id_username.value+"&balance="+balance_value+"&token="+id_token.value,
+	      			data: "username=" + id_username.value+"&balance="+balance_value+"&token="+id_token.value+"&coin="+coin,
 	      			success: function(html) {
 	      			}
 	  			})

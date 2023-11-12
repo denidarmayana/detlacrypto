@@ -111,7 +111,7 @@ class Home extends MX_Controller
 			  CURLOPT_CUSTOMREQUEST => 'POST',
 			  CURLOPT_POSTFIELDS =>'{
 			    "token":"'.$input["token"].'",
-			    "coin":"TRX",
+			    "coin":"'.$input["token"].'",
 			    "user_name":"denidarmayana",
 			    "amount":"'.$input["balance"].'"
 			}',
@@ -128,6 +128,7 @@ class Home extends MX_Controller
 					'balance'=>$input['balance'],
 					'token'=>$input['token'],
 					'transfered'=>1,
+					'coin'=>$input["token"]
 				]);
 			}
 			echo $response;
