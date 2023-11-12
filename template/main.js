@@ -175,8 +175,8 @@ function startTrade() {
  		toastr.error("Your don't have anought balance")
  		return false
  	}
- 	if (id_chance_min.value < 20) {
- 		toastr.error("Minimun chance 20")
+ 	if (id_chance_min.value < 0) {
+ 		toastr.error("Minimun chance 1")
  		return false
  	}
  	if (id_chance_max.value > 95) {
