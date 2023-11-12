@@ -51,6 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'home';
 $route['auth'] = 'auth';
+$route['masuk'] = 'afiliator/masuk';
 $route['register'] = 'auth/register';
 $route['reff/(:any)'] = 'auth/referral';
 $route['cryptoapisverifydomain'] = 'capis/webhook/veryfied';
