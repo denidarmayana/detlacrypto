@@ -23,8 +23,8 @@
                                 <th class="text-center">Member Hari Ini</th>
                             </tr>
                             <tr>
-                                <td class="text-center">5</td>
-                                <td class="text-center">5</td>
+                                <td class="text-center"><?=$this->app->jumlah_members() ?> </td>
+                                <td class="text-center"><?=$this->app->jumlah_members_today() ?></td>
                             </tr>
                         </table>
                         <p class="mb-1 mt-3">Balance Member <span class="float-end"><?=$this->app->tgl() ?></span></p>
