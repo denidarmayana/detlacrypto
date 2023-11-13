@@ -41,7 +41,7 @@
                                     <p class="form-label text-center m-0">Coin</p>
                                     <select class="form-control" id="coin">
                                         <option value="0">Select Coin</option>
-                                        <option>BITBOT</option>
+                                        <option>XBOT</option>
                                         <option>TRX</option>
                                         <option>DOGE</option>
                                         <option>BTT</option>
