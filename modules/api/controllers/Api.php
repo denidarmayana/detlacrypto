@@ -165,4 +165,41 @@ class Api extends RestController
 		];
 		$this->response($response,200);
 	}
+	public function cekVpn_get()
+	{
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => 'https://ipinfo.io?token=01aa07c060c64c',
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => '',
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 0,
+		  CURLOPT_FOLLOWLOCATION => true,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => 'GET',
+		));
+		$response = curl_exec($curl);
+		curl_close($curl);
+		$this->response($response,200);
+	}
+	function get_ip_address($proxy = false)
+	{
+	    if ($proxy === true)
+	    {
+	        foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED') as $key)
+	        {
+	            if (array_key_exists($key, $_SERVER) === true)
+	            {
+	                foreach (array_map('trim', explode(',', $_SERVER[$key])) as $ip)
+	                {
+	                    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false)
+	                    {
+	                        return $ip;
+	                    }
+	                }
+	            }
+	        }
+	    }
+	    return $_SERVER['REMOTE_ADDR'];
+	}
 }

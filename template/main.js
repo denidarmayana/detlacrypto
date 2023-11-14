@@ -26,6 +26,7 @@ const id_link_reff = document.getElementById('link_reff');
 const id_delay = document.getElementById('delay');
 const id_coin = document.getElementById('coin');
 const id_coin_name = document.getElementById('coin_name');
+const jaringan = document.getElementById('jaringan');
 // composen
 
 
@@ -39,21 +40,26 @@ const btn_boom = document.getElementById('boom');
 const btn_claim = document.getElementById('claim');
 const btn_logout = document.getElementById('logout');
 
-const socket = new WebSocket("wss://deltacrypto.biz.id:7575");
-socket.addEventListener('open', (event) => {
-  console.log('WebSocket connected');
+const wss = new WebSocket('wss://socket.pasino.io/dice/');
+let coins;
+wss.addEventListener('open', () => {
+  wss.send(JSON.stringify({method:"initialization",socket_token:id_socket.value}))
+});
+
+wss.addEventListener('message', (event) => {
+  const message = event.data;
+  var json = JSON.parse(message);
+  if (json.action == "update_balance") {
+  	if (json.user_balance > 0) {
+  		save_deposit(coins,json.user_balance)
+  	}
+  }
+  
   
 });
 
-
-// Listen for WebSocket connection errors
-socket.addEventListener('error', (event) => {
-  console.error('WebSocket Error:', event);
-});
-
-// Listen for WebSocket connection closures
-socket.addEventListener('close', (event) => {
-  console.log('WebSocket Connection Closed:', event);
+wss.addEventListener('close', () => {
+  window.location.href="./"
 });
 
 btn_logout.addEventListener("click",(event)=>{
@@ -64,14 +70,8 @@ id_coin.addEventListener("change",(event)=>{
 	id_coin_name.textContent = id_coin.value
 	if (id_coin.value != "BITBOT") {
 		getWallet(id_coin.value)
-		socket.send(JSON.stringify({method:"get_balance",coin:id_coin.value}))
-		socket.addEventListener('message', (event) => {
-		  var jsons = JSON.parse(event.data)
-		  if (jsons.action == "update_balance") {
-		    balance_users = jsons.user_balance
-		    save_deposit(id_coin.value,balance_users)
-		  }
-		});
+		wss.send(JSON.stringify({method:"get_balance",coin:id_coin.value}))
+		coins = id_coin.value
 	}else{
 		id_address.value = ""
 		id_qrcode.src = ""
@@ -94,8 +94,13 @@ function getSaldo(coin) {
 		type: "GET",
 		url: "./home/setSado/"+coin,
 		success: function(html) {
-			console.log(html)
-			id_balance.textContent = parseFloat(html).toFixed(8)
+			const parsedValue = parseFloat(html);
+			if (!isNaN(parsedValue)) {
+				id_balance.textContent = parsedValue.toFixed(8);
+			} else {
+				id_balance.textContent = parseFloat(0).toFixed(8);
+			}
+			
 		}
 	})
 }
@@ -105,7 +110,7 @@ function save_deposit(coin,amount) {
 		url: "./home/save_deposit",
 		data: "coin=" + coin+"&amount="+amount,
 		success: function(html) {
-			console.log(html)
+
 		}
 	})
 }
