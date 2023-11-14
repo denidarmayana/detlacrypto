@@ -59,11 +59,10 @@ wss.addEventListener('message', (event) => {
 });
 
 wss.addEventListener('close', () => {
-  window.location.href="./"
+  window.location.href="./logout"
 });
 
 btn_logout.addEventListener("click",(event)=>{
-	wss.close()
 	window.location.href="./logout"
 })
 id_coin.addEventListener("change",(event)=>{
