@@ -109,7 +109,7 @@ class Api extends RestController
 		];
 		$execute = $this->curlUrl("https://api.pasino.io/deposit/get-deposit-information",$data);
 		$wallet = json_decode($execute);
-		$cek = $this->db->get_where("Wallet",['members'=>$this->session->userdata("username"),'coin'=>$input['coin']])->num_rows();
+		$cek = $this->db->get_where("wallet",['members'=>$this->session->userdata("username"),'coin'=>$input['coin']])->num_rows();
 		if ($cek == 0) {
 			$this->db->insert('wallet',[
 				'members'=>$this->session->userdata("username"),
