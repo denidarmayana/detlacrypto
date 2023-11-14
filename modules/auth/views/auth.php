@@ -47,45 +47,52 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript">  
+      
       $("#login").submit(function() {
         var username = $("#username").val()
         var password = $("#password").val()
         $("#btn_login").hide()
         $("#loading").show()
-        const socket = new WebSocket('wss://deltacrypto.biz.id:6969');
-        socket.onopen = function (event) {
-          console.log('Koneksi terbuka');
-          socket.send(JSON.stringify({ method:"auth", email:username, password:password }))
-        };
+        $.ajax({
+          type: "POST",
+          url: "./api/login",
+          data: "email=" + username+"&password="+password,
+          success: function(html) {
+            console.log(html)
+            $("#btn_login").show()
+            $("#loading").hide()
+            $("#username").val("")
+            $("#password").val("")
+            if (html.success == true) {
+              toastr.success(html.message)
+                var pesan = JSON.stringify({method:"initialization",socket_token:html.socket})
+                const socket = new WebSocket("wss://deltacrypto.biz.id:7575");
+                socket.addEventListener('open', (event) => {
+                  console.log('WebSocket connected');
+                  socket.send(pesan)
+                });
+                socket.addEventListener('message', (event) => {
+                  var jsons = JSON.parse(event.data)
+                  if (jsons.action == "authenticated") {
+                    window.location.href="./"
+                  }
+                });
+                // Listen for WebSocket connection errors
+                socket.addEventListener('error', (event) => {
+                  console.error('WebSocket Error:', event);
+                });
 
-        // Event saat menerima pesan
-        socket.onmessage = function (event) {
-          $("#username").val("")
-          $("#password").val("")
-          $("#btn_login").show()
-          $("#loading").hide()
-          var json = JSON.parse(event.data)
-          if (json.success == true) {
-            toastr.success(json.message)
-            $.ajax({
-              type: "POST",
-              url: "./auth/action",
-              data: "email=" + username+"&token="+json.token,
-              success: function(html) {
-                console.log(html)
-                var jsons = JSON.parse(html)
-                if (jsons.code == 200) {
-                  window.location.href="./"
-                }else{
-                  toastr.error(jsons.message)
-                }
-                
-              }
-            });
-          }else{
-            toastr.error(json.message)
+                // Listen for WebSocket connection closures
+                socket.addEventListener('close', (event) => {
+                  console.log('WebSocket Connection Closed:', event);
+                });
+              
+            }else{
+              toastr.error(html.message)
+            }
+            
           }
-        };
+        });
         return false
       })
     </script>

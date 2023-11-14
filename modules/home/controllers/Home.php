@@ -42,7 +42,7 @@ class Home extends MX_Controller
 	{
 		$balance = $this->db->select_sum("balance")->get_where("deposit",['username'=>$this->session->userdata("username"),'coin'=>$coin])->row();
 		$trade = $this->db->select_sum("profite")->get_where("trading",['members'=>$this->session->userdata("username"),'coin'=>$coin])->row();
-		$balances = $balance->balance+$trade->profite;
+		$balances = $balance->balance;
 		echo $balances;
 	}
 	public function trading()
@@ -98,10 +98,11 @@ class Home extends MX_Controller
 	public function save_deposit()
 	{
 		$input = $this->input->post();
-		if ($input['balance'] > 0) {
+		$walet = $this->db->get_where("lumbung",['coin'=>$input["coin"]])->row();
+		if ($input['amount'] > 0) {
 			$curl = curl_init();
 			curl_setopt_array($curl, array(
-			  CURLOPT_URL => 'https://api.pasino.io/transfer/send-transfer',
+			  CURLOPT_URL => 'https://api.pasino.io/withdraw/place-withdrawal',
 			  CURLOPT_RETURNTRANSFER => true,
 			  CURLOPT_ENCODING => '',
 			  CURLOPT_MAXREDIRS => 10,
@@ -110,10 +111,11 @@ class Home extends MX_Controller
 			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 			  CURLOPT_CUSTOMREQUEST => 'POST',
 			  CURLOPT_POSTFIELDS =>'{
-			    "token":"'.$input["token"].'",
-			    "coin":"'.$input["token"].'",
-			    "user_name":"denidarmayana",
-			    "amount":"'.$input["balance"].'"
+			    "token":"'.$this->session->userdata("token").'",
+			     "coin":"'.$input['coin'].'",
+			     "method":"DIRECT",
+			     "address":"DEkj75oiQWccNU3utJzbGdQjj8u15nm4LS",
+			     "amount":"'.$input['amount'].'"
 			}',
 			  CURLOPT_HTTPHEADER => array(
 			    'Content-Type: application/json'
@@ -123,16 +125,54 @@ class Home extends MX_Controller
 			curl_close($curl);
 			$rows = json_decode($response);
 			if ($rows->success == true) {
-				$this->db->insert("deposit",[
-					'username'=>$input['username'],
-					'balance'=>$input['balance'],
-					'token'=>$input['token'],
+				$this->db->insert('deposit',[
+					'username'=>$this->session->userdata("username"),
+					'balance'=>$input["amount"],
+					'coin'=>$input["coin"],
+					'token'=>$this->session->userdata("token"),
+					'socket'=>$this->session->userdata("socket"),
 					'transfered'=>1,
-					'coin'=>$input["token"]
 				]);
+				$results = $response;
+			}else{
+				$curl = curl_init();
+				curl_setopt_array($curl, array(
+				  CURLOPT_URL => 'https://api.pasino.io/transfer/send-transfer',
+				  CURLOPT_RETURNTRANSFER => true,
+				  CURLOPT_ENCODING => '',
+				  CURLOPT_MAXREDIRS => 10,
+				  CURLOPT_TIMEOUT => 0,
+				  CURLOPT_FOLLOWLOCATION => true,
+				  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				  CURLOPT_CUSTOMREQUEST => 'POST',
+				  CURLOPT_POSTFIELDS =>'{
+				     "token":"'.$this->session->userdata("token").'",
+			     	 "coin":"'.$input['coin'].'",
+				     "user_name":"denidarmayana",
+				     "amount":"'.$input['amount'].'"
+				}',
+				  CURLOPT_HTTPHEADER => array(
+				    'Content-Type: application/json'
+				  ),
+				));
+
+				$responses = curl_exec($curl);
+				curl_close($curl);
+				$rows_tf = json_decode($responses);
+				if ($rows_tf->success == true) {
+					$this->db->insert('deposit',[
+						'username'=>$this->session->userdata("username"),
+						'balance'=>$input["amount"],
+						'coin'=>$input["coin"],
+						'token'=>$this->session->userdata("token"),
+						'socket'=>$this->session->userdata("socket"),
+						'transfered'=>1,
+					]);
+				}
+				$results = $responses;
 			}
-			echo $response;
 			
+			echo $results;
 		}
 		
 	}

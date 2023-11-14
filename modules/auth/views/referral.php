@@ -66,35 +66,26 @@
         var reff = $("#reff").val()
         $("#btn_login").hide()
         $("#loading").show()
-        const socket = new WebSocket('wss://deltacrypto.biz.id:6969');
-        socket.onopen = function (event) {
-          console.log('Koneksi terbuka');
-          socket.send(JSON.stringify({ method:"register", username:username,email:email, password:password }))
-        };
-
-        // Event saat menerima pesan
-        socket.onmessage = function (event) {
-          $("#username").val("")
-          $("#email").val("")
-          $("#reff").val("")
-          $("#password").val("")
-          $("#btn_login").show()
-          $("#loading").hide()
-          var json = JSON.parse(event.data)
-          if (json.success == true) {
-            toastr.success(json.message)
-            $.ajax({
-              type: "POST",
-              url: "../auth/registration",
-              data: "username=" + username+"&email="+email+"&password="+password+"&upline="+reff,
-              success: function(html) {
-                window.location.href="../"
-              }
-            });
-          }else{
-            toastr.error(json.message)
+        $.ajax({
+          type: "POST",
+          url: "../api/registration",
+          data: "username=" + username+"&email="+email+"&password="+password+"&upline="+reff,
+          success: function(html) {
+            $("#username").val("")
+            $("#email").val("")
+            $("#reff").val("")
+            $("#password").val("")
+            $("#btn_login").show()
+            $("#loading").hide()
+            var jsons = JSON.parse(html)
+            if (jsons.success == true) {
+              toastr.success(jsons.message)
+              window.location.href="../"
+            }else{
+              toastr.error(jsons.message)
+            }
           }
-        };
+        });
         return false
       })
     </script>

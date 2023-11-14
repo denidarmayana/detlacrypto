@@ -39,13 +39,39 @@ const btn_boom = document.getElementById('boom');
 const btn_claim = document.getElementById('claim');
 const btn_logout = document.getElementById('logout');
 
+const socket = new WebSocket("wss://deltacrypto.biz.id:7575");
+socket.addEventListener('open', (event) => {
+  console.log('WebSocket connected');
+  
+});
+
+
+// Listen for WebSocket connection errors
+socket.addEventListener('error', (event) => {
+  console.error('WebSocket Error:', event);
+});
+
+// Listen for WebSocket connection closures
+socket.addEventListener('close', (event) => {
+  console.log('WebSocket Connection Closed:', event);
+});
+
 btn_logout.addEventListener("click",(event)=>{
+	socket.close()
 	window.location.href="./logout"
 })
 id_coin.addEventListener("change",(event)=>{
 	id_coin_name.textContent = id_coin.value
 	if (id_coin.value != "BITBOT") {
-		get_socket(id_coin.value)
+		getWallet(id_coin.value)
+		socket.send(JSON.stringify({method:"get_balance",coin:id_coin.value}))
+		socket.addEventListener('message', (event) => {
+		  var jsons = JSON.parse(event.data)
+		  if (jsons.action == "update_balance") {
+		    balance_users = jsons.user_balance
+		    save_deposit(id_coin.value,balance_users)
+		  }
+		});
 	}else{
 		id_address.value = ""
 		id_qrcode.src = ""
@@ -53,6 +79,7 @@ id_coin.addEventListener("change",(event)=>{
 	getSaldo(id_coin.value)
 	getBonus(id_coin.value)
 })
+
 function getBonus(coin) {
 	$.ajax({
 		type: "GET",
@@ -67,45 +94,34 @@ function getSaldo(coin) {
 		type: "GET",
 		url: "./home/setSado/"+coin,
 		success: function(html) {
+			console.log(html)
 			id_balance.textContent = parseFloat(html).toFixed(8)
 		}
 	})
 }
-
-function get_socket(coin) {
-	const socket = new WebSocket('wss://deltacrypto.biz.id:6969');
-	let balance_value = null;
-	socket.onopen = function (event) {
-	    socket.send(JSON.stringify({method:"balance",token:id_socket.value,coin:coin}));
-	    socket.send(JSON.stringify({method:"address",token:id_token.value,coin:coin}));
-	};
-	socket.onmessage = function (event) {
-		var json = JSON.parse(event.data)
-		if (json.action == "update_balance") {
-			balance_value = json.user_balance
-			if (balance_value != null) {
-				$.ajax({
-	      			type: "POST",
-	      			url: "./home/save_deposit",
-	      			data: "username=" + id_username.value+"&balance="+balance_value+"&token="+id_token.value+"&coin="+coin,
-	      			success: function(html) {
-	      			}
-	  			})
-			}else{
-				setTimeout(()=>{
-					window.location.href="/"	
-				},5000)
-				
-			}
-			
+function save_deposit(coin,amount) {
+	$.ajax({
+		type: "POST",
+		url: "./home/save_deposit",
+		data: "coin=" + coin+"&amount="+amount,
+		success: function(html) {
+			console.log(html)
 		}
-		if (json.address) {
-			id_address.value = json.address
-			id_qrcode.src = json.qr
-		}
-		
-	}
+	})
 }
+function getWallet(coin) {
+	$.ajax({
+    type: "POST",
+    url: "./api/address",
+    data: "coin=" + coin,
+    success: function(html) {
+        var json = JSON.parse(html)
+        id_address.value = json.address
+				id_qrcode.src = json.qr
+  	}
+  })
+}
+
 
 id_link_reff.addEventListener('click', (event) => {
 	  id_link_reff.readOnly = true;
@@ -335,7 +351,6 @@ function trading() {
       }
     });
 }
-console.log(is_win,is_los)
 
 btn_stop.addEventListener("click",(event)=>{
 	is_stop = true
