@@ -42,7 +42,7 @@ class Home extends MX_Controller
 	{
 		$balance = $this->db->select_sum("balance")->get_where("deposit",['username'=>$this->session->userdata("username"),'coin'=>$coin])->row();
 		$trade = $this->db->select_sum("profite")->get_where("trading",['members'=>$this->session->userdata("username"),'coin'=>$coin])->row();
-		$balances = $balance->balance+$balances->profite;
+		$balances = $balance->balance+$trade->profite;
 		echo $balances;
 	}
 	public function trading()
