@@ -41,22 +41,22 @@
                             </tr>
                             <tr>
                                 <td class=" text-primary">XBOT</td>
-                                <td class="text-center"><?=$this->app->getDeposit("XBOT") ?></td>
+                                <td class="text-center"><?=number_format($this->app->getDeposit("XBOT"),8) ?></td>
                                 <td class="text-center"><?=number_format($this->app->getMinus("XBOT"),8) ?></td>
                             </tr>
                             <tr>
                                 <td class=" text-primary">DOGE</td>
-                                <td class="text-center"><?=$this->app->getDeposit("DOGE") ?></td>
+                                <td class="text-center"><?=number_format($this->app->getDeposit("DOGE"),8) ?></td>
                                 <td class="text-center"><?=number_format($minus_doge,8) ?></td>
                             </tr>
                             <tr>
                                 <td class=" text-primary">TRX</td>
-                                <td class="text-center"><?=$this->app->getDeposit("TRX") ?></td>
+                                <td class="text-center"><?=number_format($this->app->getDeposit("TRX"),8) ?></td>
                                 <td class="text-center"><?=number_format($minus_trx,8) ?></td>
                             </tr>
                             <tr>
                                 <td class=" text-primary">BTT</td>
-                                <td class="text-center"><?=$this->app->getDeposit("BTT") ?></td>
+                                <td class="text-center"><?=number_format($this->app->getDeposit("BTT"),8) ?></td>
                                 <td class="text-center"><?=number_format($minus_btt,8) ?></td>
                             </tr>
                         </table>
