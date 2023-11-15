@@ -28,6 +28,11 @@
                             </tr>
                         </table>
                         <p class="mb-1 mt-3">Balance Member <span class="float-end"><?=$this->app->tgl() ?></span></p>
+                        <?php 
+                        $minus_doge = ($this->app->getMinus("DOGE") > $this->app->getDeposit("DOGE") ? $this->app->getDeposit("DOGE") : $this->app->getMinus("DOGE"));
+                        $minus_trx = ($this->app->getMinus("TRX") > $this->app->getDeposit("TRX") ? $this->app->getDeposit("TRX") : $this->app->getMinus("TRX"));
+                        $minus_btt = ($this->app->getMinus("BTT") > $this->app->getDeposit("BTT") ? $this->app->getDeposit("BTT") : $this->app->getMinus("BTT"));
+                        ?>
                         <table width="100%" class="data-balance mb-2">
                             <tr>
                                 <th class="text-center bg-primary">Coin</th>
@@ -42,17 +47,17 @@
                             <tr>
                                 <td class=" text-primary">DOGE</td>
                                 <td class="text-center"><?=$this->app->getDeposit("DOGE") ?></td>
-                                <td class="text-center"><?=$this->app->getMinus("DOGE") ?></td>
+                                <td class="text-center"><?=$minus_doge ?></td>
                             </tr>
                             <tr>
                                 <td class=" text-primary">TRX</td>
                                 <td class="text-center"><?=$this->app->getDeposit("TRX") ?></td>
-                                <td class="text-center"><?=$this->app->getMinus("TRX") ?></td>
+                                <td class="text-center"><?=$minus_trx ?></td>
                             </tr>
                             <tr>
                                 <td class=" text-primary">BTT</td>
                                 <td class="text-center"><?=$this->app->getDeposit("BTT") ?></td>
-                                <td class="text-center"><?=$this->app->getMinus("BTT") ?></td>
+                                <td class="text-center"><?=$minus_btt ?></td>
                             </tr>
                         </table>
                        <p class="mb-1 mt-3">Bagi Hasil Afiliator</p>
@@ -67,16 +72,66 @@
                             </tr>
                             <tr>
                                 <td class=" text-primary">DOGE</td>
-                                <td class="text-center"><?=(floatval($this->app->getMinus("DOGE"))*40)/100  ?></td>
+                                <td class="text-center"><?=(floatval($minus_doge)*40)/100  ?></td>
                             </tr>
                             <tr>
                                 <td class=" text-primary">TRX</td>
-                                <td class="text-center"><?=(floatval($this->app->getMinus("TRX"))*40)/100  ?></td>
+                                <td class="text-center"><?=(floatval($minus_trx)*40)/100  ?></td>
                             </tr>
                             <tr>
                                 <td class=" text-primary">BTT</td>
-                                <td class="text-center"><?=(floatval($this->app->getMinus("BTT"))*40)/100  ?></td>
+                                <td class="text-center"><?=(floatval($minus_btt)*40)/100  ?></td>
                             </tr>
+                        </table>
+                        <p class="mb-1 mt-3">Riwayat Pencairan</p>
+                       <table width="100%" class="data-balance mb-2">
+                            <tr>
+                                <th class="text-center">Tanggal</th>
+                                <th class="text-center">Coin</th>
+                                <th class="text-center">Jumlah</th>
+                            </tr>
+                            
+                        </table>
+                        <p class="mb-1 mt-3 text-center">Wallet Afiliator</p>
+                        <form class="mb-3" id="update_wallet" method="post" action="">
+                            <div class="row mb-2">
+                               <div class="col-12">
+                                   <label class="form-label">Wallet XBOT</label>
+                                   <input type="text" class="form-control" placeholder="Wallet XBOT" id="xbot" value="<?=$wallet->xbot ?>">
+                               </div>
+                           </div>
+                           <div class="row mb-2">
+                               <div class="col-12">
+                                   <label class="form-label">Wallet DOGE</label>
+                                   <input type="text" class="form-control" placeholder="Wallet DOGE" id="doge" value="<?=$wallet->doge ?>">
+                               </div>
+                           </div>
+                           <div class="row mb-2">
+                               <div class="col-12">
+                                   <label class="form-label">Wallet TRX</label>
+                                   <input type="text" class="form-control" placeholder="Wallet TRX" id="trx" value="<?=$wallet->trx ?>">
+                               </div>
+                           </div>
+                           <div class="row mb-2">
+                               <div class="col-12">
+                                   <label class="form-label">Wallet BTT</label>
+                                   <input type="text" class="form-control" placeholder="Wallet BTT" id="btt" value="<?=$wallet->btt ?>">
+                               </div>
+                           </div>
+                           <div class="row mb-2">
+                               <div class="col-12">
+                                   <button class="btn btn-success w-100">Update Wallet</button>
+                               </div>
+                           </div>
+                        </form>
+                        <p class="mb-1 mt-3">Riwayat Pencairan</p>
+                       <table width="100%" class="data-balance mb-2">
+                            <tr>
+                                <th class="text-center">Tanggal</th>
+                                <th class="text-center">Coin</th>
+                                <th class="text-center">Jumlah</th>
+                            </tr>
+                            
                         </table>
                     </div>
                 </div>
@@ -88,6 +143,26 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bignumber.js@9"></script>
-    <script type="text/javascript" src="<?=base_url('template/main.js?='.time()) ?>"></script>
+    <script type="text/javascript">
+        $("#update_wallet").submit(function() {
+            var xbot = $("#xbot").val()
+            var doge = $("#xbot").val()
+            var trx = $("#trx").val()
+            var btt = $("#btt").val()
+            $.ajax({
+                type:'post',
+                url:'./afiliator/update_wallet',
+                data:'xbot='+xbot+'doge='+doge+'trx='+trx+'btt='+btt,
+                success:()=>{
+                    if (html.success == true) {
+                      toastr.success(html.message)
+                      window.location.href="./afiliator"
+                    }else{
+                      toastr.error(html.message)
+                    }
+                }
+            })
+        })
+    </script>
   </body>
 </html>

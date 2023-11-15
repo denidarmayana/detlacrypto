@@ -16,10 +16,14 @@ class Afiliator extends MX_Controller
 	public function index()
 	{
 	    $this->app->cekSessionAfiliator();
-		$this->load->view("home");
+	    $data = [
+			'wallet'=>$this->db->get("wallet_wfiliator")->row()
+		];
+		$this->load->view("home",$data);
 	}
 	public function masuk()
 	{
+		
 		$this->load->view("masuk");
 	}
 	public function action()
@@ -40,6 +44,28 @@ class Afiliator extends MX_Controller
 				'message'=>"Gagal Login"
 			]);
 		}
+	}
+	public function update_wallet()
+	{
+		$input = $this->input->post();
+		$save = $this->db->update('wallet_wfiliator',[
+			'xbot'=>$input['xbot'],
+			'doge'=>$input['doge'],
+			'trx'=>$input['trx'],
+			'btt'=>$input['btt'],
+		],['id'=>1]);
+		if ($save) {
+			$data = [
+				'code'=>200,
+				'message'=>"Wallet afiliator berhasil diperbaharui"
+			];
+		}else{
+			$data = [
+				'code'=>200,
+				'message'=>"Wallet afiliator berhasil diperbaharui"
+			];
+		}
+		echo json_encode($data);
 	}
 	
 }
