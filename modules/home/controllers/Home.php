@@ -42,8 +42,35 @@ class Home extends MX_Controller
 	{
 		$balance = $this->db->select_sum("balance")->get_where("deposit",['username'=>$this->session->userdata("username"),'coin'=>$coin])->row();
 		$trade = $this->db->select_sum("profite")->get_where("trading",['members'=>$this->session->userdata("username"),'coin'=>$coin])->row();
-		$balances = $balance->balance;
-		echo $balances;
+		$wd = $this->db->select_sum("amount")->get_where("withdrawl",['members'=>$this->session->userdata("username"),'coin'=>$coin])->row();
+		$balances = ($balance->balance+$trade->profite)-$wd->amount;
+		if ($balances > 0) {
+			echo $balances;
+		}else{
+			echo 0;	
+		}
+		
+	}
+	public function withdrawl()
+	{
+		$input = $this->input->post();
+		$save = $this->db->insert("withdrawl",[
+			'members'=>$this->session->userdata("username"),
+			'coin'=>$input["coin"],
+			'address'=>$input["address"],
+			'amount'=>$input["amount"],
+		]);
+		if ($save) {
+			echo json_encode([
+				'code'=>200,
+				'message'=>"Withdrawl balance success"
+			]);
+		}else{
+			echo json_encode([
+				'code'=>203,
+				'message'=>"Withdrawl balance failed"
+			]);
+		}
 	}
 	public function trading()
 	{
@@ -58,8 +85,15 @@ class Home extends MX_Controller
 		$profit_owner = (floatval($profite_management)*60)/100;
 		$profit_team = (floatval($profite_management)*40)/100;
 		$new_profite = floatval($input['base']) + floatval($profite_untuk_user);
-		
-		if ($wining <= $input['chance']) {
+		$balance = $this->db->select_sum("balance")->get_where("deposit",['username'=>$this->session->userdata("username"),'coin'=>$input['coin']])->row();
+		$trade = $this->db->select_sum("profite")->get_where("trading",['members'=>$this->session->userdata("username"),'coin'=>$input['coin']])->row();
+		$persen = ($balance->balance*20)/100;
+		if ($trade->profite >= $persen ) {
+			$chance = $input['chance']/3;
+		}else{
+			$chance = $input['chance'];
+		}
+		if ($wining <= $chance ) {
 			$status = 1;
 			$profit_val = floatval($new_profite);
 			$users = $this->db->get_where("members",['username'=>$this->session->userdata("username")])->row();
@@ -92,7 +126,7 @@ class Home extends MX_Controller
 			'profite'=>number_format($profit_val,8),
 			'type'=>($input['type'] == 1 ? "HIGHT" : "LOW"),
 			'base'=>$input['base'],
-			'chance'=>$input['chance']
+			'chance'=>$chance
 		]);
 	}
 	public function save_deposit()

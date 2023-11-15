@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Delta Crypto Trading Bot</title>
+    <title>Crypto Trading Bot</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" type="text/css" rel="stylesheet">
@@ -197,9 +197,9 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <input type="text" placeholder="Address Wallet TRX" class="form-control mb-3">
-            <input type="text" placeholder="amount" class="form-control mb-4">
-            <button class="btn btn-success w-100">Submit</button>
+            <input type="text" placeholder="Address Wallet TRX" class="form-control mb-3" id="address_wd">
+            <input type="text" placeholder="amount" class="form-control mb-4" id="amount_wd">
+            <button class="btn btn-success w-100" id="btn_wd">Submit</button>
           </div>
         </div>
       </div>

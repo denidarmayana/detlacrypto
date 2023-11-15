@@ -27,6 +27,8 @@ const id_delay = document.getElementById('delay');
 const id_coin = document.getElementById('coin');
 const id_coin_name = document.getElementById('coin_name');
 const jaringan = document.getElementById('jaringan');
+const amount_wd = document.getElementById('amount_wd');
+const address_wd = document.getElementById('address_wd');
 // composen
 
 
@@ -39,6 +41,38 @@ const btn_reset = document.getElementById('reset');
 const btn_boom = document.getElementById('boom');
 const btn_claim = document.getElementById('claim');
 const btn_logout = document.getElementById('logout');
+const btn_wd = document.getElementById('btn_wd');
+
+btn_wd.addEventListener("click",()=>{
+	if (address_wd.value.length == 0) {
+		toastr.error("Address Wallet for withdrawl can't be empty")
+		return false
+	}
+	if (amount_wd.value.length == 0) {
+		toastr.error("Amount for withdrawl can't be empty")
+		return false
+	}
+	if (id_balance.textContent < amount_wd.value) {
+		toastr.error("Your don't have amought balance")
+		return false
+	}
+	$.ajax({
+		type: "POST",
+		url: "./home/withdrawl",
+		data: "coin=" + id_coin.value+"&amount="+amount_wd.value+"&address="+address_wd.value,
+		success: function(html) {
+			var json = JSON.parse(html)
+			if (json.code == 200) {
+				toastr.success(json.message)
+				setTimeout(()=>{
+					window.location.href="./"
+				},1000)
+			}else{
+				toastr.error(json.message)
+			}
+		}
+	})
+})
 
 const wss = new WebSocket('wss://socket.pasino.io/dice/');
 let coins;
@@ -59,7 +93,7 @@ wss.addEventListener('message', (event) => {
 });
 
 wss.addEventListener('close', () => {
-  window.location.href="./logout"
+  window.location.href="./"
 });
 
 btn_logout.addEventListener("click",(event)=>{
@@ -142,8 +176,8 @@ id_link_reff.addEventListener('click', (event) => {
 });
 
 btn_claim.addEventListener("click",(event)=>{
-	if (id_bonus_reff.value < 500) {
-		toastr.error("Minimum claim 500 TRX")
+	if (id_bonus_reff.value < 10) {
+		toastr.error("Minimum claim 10 "+id_coin.value)
 	}else{
 		$.ajax({
 			type:"POST",
@@ -243,6 +277,7 @@ function trading() {
       url: "./home/trading",
       data: "base=" + base+"&chance="+chance+"&profit="+profits+"&type="+type+"&chance="+chance+"&coin="+id_coin.value,
       success: function(html) {
+      	console.log(html)
         var jsons = JSON.parse(html);
         var new_profite = parseFloat(id_profite_global.textContent) + parseFloat(jsons.profite);
         id_profite_global.textContent = parseFloat(new_profite).toFixed(8)
