@@ -264,7 +264,8 @@ let is_roll = 0
 let lastWin = 0;
 let lastLos = 0;
 function trading() {
-	BigNumber.config({ DECIMAL_PLACES: 8 });
+	if (id_coin.value != "BTT") {
+		BigNumber.config({ DECIMAL_PLACES: 8 });
 	const chance = getChance(id_chance_min.value,id_chance_max.value);
 	const actualPayouts = 95 / chance;
 	const payout = actualPayouts.toFixed(5);
@@ -393,6 +394,9 @@ function trading() {
 
       }
     });
+	}else{
+		toastr.error("this coin disabled for trading")
+	}
 }
 
 btn_stop.addEventListener("click",(event)=>{
