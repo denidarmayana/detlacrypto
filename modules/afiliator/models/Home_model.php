@@ -37,7 +37,7 @@ class Home_model extends CI_Model
     	date_default_timezone_set("Asia/Jakarta");
     	$data = $this->db->select_sum("balance")->like('created_at',date("Y-m-d"))->get_where("deposit",['coin'=>$coin])->row();
     	if ($data) {
-    		return number_format(abs($data->balance),8);
+    		return abs($data->balance);
     	}else{
     		return 0;
     	}
@@ -47,7 +47,7 @@ class Home_model extends CI_Model
     	date_default_timezone_set("Asia/Jakarta");
     	$data = $this->db->select_sum("profite")->like('created_at',date("Y-m-d"))->get_where("trading",['coin'=>$coin,'profite <'=>0])->row();
     	if ($data) {
-    		return number_format(abs($data->profite),8);
+    		return abs($data->profite);
     	}else{
     		return 0;
     	}
