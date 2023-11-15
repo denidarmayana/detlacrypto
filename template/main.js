@@ -52,7 +52,7 @@ btn_wd.addEventListener("click",()=>{
 		toastr.error("Amount for withdrawl can't be empty")
 		return false
 	}
-	if (amount_wd.value.length < 50) {
+	if (amount_wd.value < 50) {
 		toastr.error("Minimum withdrawl 50 ".id_coin.value)
 		return false
 	}
