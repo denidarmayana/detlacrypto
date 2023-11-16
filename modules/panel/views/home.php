@@ -19,84 +19,180 @@
                         <h6 class="card-title mb-4">Welcome <span class="text-warning float-end fw-600"><button class="btn btn-sm btn-danger" id="logout">Logout</button></span> </h6>
                         <ul class="nav nav-tabs" id="myTab">
                             <li class="nav-item">
-                                <a href="#home" class="nav-link active" data-bs-toggle="tab">Sumary</a>
+                                <a href="#home" class="nav-link active" data-bs-toggle="tab">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#profile" class="nav-link" data-bs-toggle="tab">Members</a>
+                                <a href="#profile" class="nav-link" data-bs-toggle="tab">Users</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#messages" class="nav-link" data-bs-toggle="tab">withdrawl</a>
+                                <a href="#messages" class="nav-link" data-bs-toggle="tab">Withdrawl</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#sharing" class="nav-link" data-bs-toggle="tab">Share</a>
                             </li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="home">
-                                <table width="100%" class="mt-1">
-                                    <tr>
-                                        <td width="50%" valign="top">
-                                            <div class="card p-0">
-                                                <div class="card-body p-2 m-0">
-                                                    <p class="m-0 mb-2 text-center">Jumlah Members</p>
-                                                    <table width="100%" class="data-panel">
-                                                        <tr>
-                                                            <td>Total</td><td class="text-end"><?=$all_members ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Hari ini</td><td class="text-end"><?=$day_members ?></td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card p-0 mt-1 mb-2">
+                                            <div class="card-body m-0 p-2">
+                                                <h6 class="card-title fw-600 text-center m-0 mb-1">Deposit Hari Ini</h6>
+                                                <table width="100%" cellpadding="5">
+                                                    <tr>
+                                                        <td width="10%"><img src="https://indodax.com/v2/logo//png/color/trx.png" width="25"> </td>
+                                                        <td valign="middle" width="60%"><h6 class="m-0">TRON</h6></td>
+                                                        <td valign="middle" width="20%">10.00000000</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="10%"><img src="https://indodax.com/v2/logo//png/color/doge.png" width="25"> </td>
+                                                        <td valign="middle" width="60%"><h6 class="m-0">DOGE</h6></td>
+                                                        <td valign="middle" width="20%">10.00000000</td>
+                                                    </tr>
+                                                </table>
                                             </div>
-                                        </td>
-                                        <td width="50%">
-                                            <div class="card p-0">
-                                                <div class="card-body p-2">
-                                                    <p class="m-0 mb-3 text-center">Deposit Members</p>
-                                                    <table width="100%" class="data-panel">
-                                                        <tr>
-                                                            <td colspan="2" class="text-center">Hari Ini</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>XBOT</td><td class="text-end"><?=$all_members ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>DOGE</td><td class="text-end"><?=$day_members ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>TRX</td><td class="text-end"><?=$day_members ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>BTT</td><td class="text-end"><?=$day_members ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2" class="text-center">Sampai Hari Ini</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>XBOT</td><td class="text-end"><?=$all_members ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>DOGE</td><td class="text-end"><?=$day_members ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>TRX</td><td class="text-end"><?=$day_members ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>BTT</td><td class="text-end"><?=$day_members ?></td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card p-0 mt-1 mb-2">
+                                            <div class="card-body m-0 p-2">
+                                                <h6 class="card-title fw-600 text-center m-0 mb-1">Withdrawl Hari Ini</h6>
+                                                <table width="100%" cellpadding="5">
+                                                    <tr>
+                                                        <td width="10%"><img src="https://indodax.com/v2/logo//png/color/trx.png" width="25"> </td>
+                                                        <td valign="middle" width="60%"><h6 class="m-0">TRON</h6></td>
+                                                        <td valign="middle" width="20%">10.00000000</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="10%"><img src="https://indodax.com/v2/logo//png/color/doge.png" width="25"> </td>
+                                                        <td valign="middle" width="60%"><h6 class="m-0">DOGE</h6></td>
+                                                        <td valign="middle" width="20%">10.00000000</td>
+                                                    </tr>
+                                                </table>
                                             </div>
-                                        </td>
-                                    </tr>
-                                </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card p-0 mt-1 mb-2">
+                                            <div class="card-body m-0 p-2">
+                                                <h6 class="card-title fw-600 m-0 mb-1">Members Hari Ini <span class="text-warning float-end"><?=$day_members ?></span> </h6>
+                                                <table width="100%" class="data-panel">
+                                                    <tr>
+                                                        <td>Username</td>
+                                                        <td>Email</td>
+                                                    </tr>
+                                                    <tbody>
+                                                        <?php foreach ($day_members_result as $dm) { ?>
+                                                        <tr>
+                                                            <td><?=$dm->username ?></td>
+                                                            <td><?=$dm->email ?></td>
+                                                        </tr>
+                                                        <?php } ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="profile">
-                                <h4 class="mt-2">Profile tab content</h4>
-                                <p>Vestibulum nec erat eu nulla rhoncus fringilla ut non neque. Vivamus nibh urna, ornare id gravida ut, mollis a magna. Aliquam porttitor condimentum nisi, eu viverra ipsum porta ut. Nam hendrerit bibendum turpis, sed molestie mi fermentum id. Aenean volutpat velit sem. Sed consequat ante in rutrum convallis. Nunc facilisis leo at faucibus adipiscing.</p>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card p-0 mt-1 mb-2">
+                                            <div class="card-body m-0 p-2 table-responsive">
+                                                <h6 class="card-title fw-600 m-0 mb-1">Members</h6>
+                                                <table width="100%" class="data-panel">
+                                                    <tr>
+                                                        <td>Username</td>
+                                                        <td>XBOT</td>
+                                                        <td>TRX</td>
+                                                        <td>DOGE</td>
+                                                    </tr>
+                                                    <tbody>
+                                                        <?php foreach ($all_members as $am) { 
+
+                                                            $saldo_xbot = $this->app->setSado($am->username,"XBOT");
+                                                            $saldo_trx = $this->app->setSado($am->username,"TRX");
+                                                            $saldo_doge = $this->app->setSado($am->username,"DOGE");
+                                                        ?>
+                                                        <tr>
+                                                            <td><?=$am->username ?></td>
+                                                            <td><?=number_format($saldo_xbot,8) ?></td>
+                                                            <td><?=number_format($saldo_trx,8) ?></td>
+                                                            <td><?=number_format($saldo_doge,8) ?></td>
+                                                        </tr>
+                                                        <?php } ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="messages">
-                                <h4 class="mt-2">Messages tab content</h4>
-                                <p>Donec vel placerat quam, ut euismod risus. Sed a mi suscipit, elementum sem a, hendrerit velit. Donec at erat magna. Sed dignissim orci nec eleifend egestas. Donec eget mi consequat massa vestibulum laoreet. Mauris et ultrices nulla, malesuada volutpat ante. Fusce ut orci lorem. Donec molestie libero in tempus imperdiet. Cum sociis natoque penatibus et magnis.</p>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card p-0 mt-1 mb-2">
+                                            <div class="card-body m-0 p-2 table-responsive">
+                                                <h6 class="card-title fw-600 m-0 mb-1">Withdrawl </h6>
+                                                <table width="100%" class="data-panel">
+                                                    <tr>
+                                                        <td>Username</td>
+                                                        <td>Coin</td>
+                                                        <td>Address</td>
+                                                        <td>Amount</td>
+                                                        <td>Status</td>
+                                                    </tr>
+                                                    <tbody>
+                                                        <?php foreach ($withdrawl as $wd) {  ?>
+                                                        <tr>
+                                                            <td><?=$wd->members ?></td>
+                                                            <td><?=$wd->coin ?></td>
+                                                            <td><?=$wd->address ?></td>
+                                                            <td><?=$wd->amount ?></td>
+                                                            <td><?=$wd->status ?></td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <?php } ?>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                            <!-- TABcONTENT -->
+                            <div class="tab-pane fade" id="sharing">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card p-0 mt-1 mb-2">
+                                            <div class="card-body m-0 p-2 table-responsive">
+                                                <h6 class="card-title fw-600 m-0 mb-1">Withdrawl </h6>
+                                                <table width="100%" class="data-panel">
+                                                    <tr>
+                                                        <td>Username</td>
+                                                        <td>Coin</td>
+                                                        <td>Amount</td>
+                                                        <td>Status</td>
+                                                    </tr>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>deni020988</td>
+                                                            <td>DOGE</td>
+                                                            <td>0.00000000</td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- TABcONTENT -->
                         </div>
                     </div>
                 </div>

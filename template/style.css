@@ -80,8 +80,9 @@ a:hover{
 }
 .data-panel tr td{
     border: 0.5px solid white;
-    padding: 4px;
+    padding: 4px 7px;
 }
+
 .data-balance tr th{
     border: 1px solid white;
     padding: 8px;
@@ -92,4 +93,7 @@ a:hover{
 }
 .fs-10{
     font-size: 11px;
+}
+.fw-600{
+    font-weight: 600;
 }

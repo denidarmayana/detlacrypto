@@ -17,8 +17,10 @@ class Panel extends MX_Controller
 	{
 	    $this->app->cekSessionPanel();
 	    $data = [
-			'all_members'=>$this->db->get("members")->num_rows(),
+			'all_members'=>$this->db->order_by('id','desc')->get("members")->result(),
+			'withdrawl'=>$this->db->order_by('id','desc')->get("withdrawl")->result(),
 			'day_members'=>$this->db->like('created_at',date("Y-m-d"))->get("members")->num_rows(),
+			'day_members_result'=>$this->db->order_by('id','desc')->like('created_at',date("Y-m-d"))->get("members")->result(),
 			'deposit_xbot_today'=>$this->db->like('created_at',date("Y-m-d"))->get("members")->num_rows()
 		];
 		$this->load->view("home",$data);
