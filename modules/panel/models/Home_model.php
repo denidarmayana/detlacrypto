@@ -51,12 +51,18 @@ class Home_model extends CI_Model
     public function getDepositAll($coin)
     {
         date_default_timezone_set("Asia/Jakarta");
-        $data = $this->db->select_sum("balance")->get_where("deposit",['coin'=>$coin])->row();
-        if ($data) {
-            return $data->balance;
+        $cek = $this->db->select_sum("balance")->get_where("deposit",['coin'=>$coin])->num_rows();
+        if ($cek > 0) {
+            $data = $this->db->select_sum("balance")->get_where("deposit",['coin'=>$coin])->row();
+            if ($data) {
+                return $data->balance;
+            }else{
+                return 0;
+            }
         }else{
-            return 0;
+             return number_format(0,8);
         }
+        
     }
     public function getTrading($username,$coin)
     {

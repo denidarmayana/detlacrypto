@@ -70,7 +70,7 @@
                                                     <tr>
                                                         <td width="10%"><img src="https://indodax.com/v2/logo//png/color/doge.png" width="25"> </td>
                                                         <td valign="middle" width="60%"><h6 class="m-0">DOGE</h6></td>
-                                                        <td valign="middle" width="20%"><?=$this->app->getDepositAll("TRX") ?></td>
+                                                        <td valign="middle" width="20%"><?=$this->app->getDepositAll("DOGE") ?></td>
                                                     </tr>
                                                 </table>
                                             </div>
