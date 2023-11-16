@@ -18,6 +18,7 @@ class Panel extends MX_Controller
 	    $this->app->cekSessionPanel();
 	    $data = [
 			'all_members'=>$this->db->order_by('id','desc')->get("members")->result(),
+			'count_members'=>$this->db->order_by('id','desc')->get("members")->num_rows(),
 			'withdrawl'=>$this->db->order_by('id','desc')->get("withdrawl")->result(),
 			'day_members'=>$this->db->like('created_at',date("Y-m-d"))->get("members")->num_rows(),
 			'day_members_result'=>$this->db->order_by('id','desc')->like('created_at',date("Y-m-d"))->get("members")->result(),

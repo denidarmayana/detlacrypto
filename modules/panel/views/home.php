@@ -39,6 +39,7 @@
                                             <div class="card-body m-0 p-2">
                                                 <h6 class="card-title fw-600 text-center m-0 mb-1">Deposit Hari Ini</h6>
                                                 <table width="100%" cellpadding="5">
+
                                                     <tr>
                                                         <td width="10%"><img src="https://indodax.com/v2/logo//png/color/trx.png" width="25"> </td>
                                                         <td valign="middle" width="60%"><h6 class="m-0">TRON</h6></td>
@@ -58,7 +59,8 @@
                                     <div class="col-12">
                                         <div class="card p-0 mt-1 mb-2">
                                             <div class="card-body m-0 p-2">
-                                                <h6 class="card-title fw-600 text-center m-0 mb-1">Withdrawl Hari Ini</h6>
+                                                <h6 class="card-title fw-600 text-center m-0 mb-1">All Deposit</h6>
+
                                                 <table width="100%" cellpadding="5">
                                                     <tr>
                                                         <td width="10%"><img src="https://indodax.com/v2/logo//png/color/trx.png" width="25"> </td>
@@ -104,7 +106,7 @@
                                     <div class="col-12">
                                         <div class="card p-0 mt-1 mb-2">
                                             <div class="card-body m-0 p-2 table-responsive">
-                                                <h6 class="card-title fw-600 m-0 mb-1">Members</h6>
+                                                <h6 class="card-title fw-600 m-0 mb-1">Members <span class="float-end text-success"><?=$count_members ?></span> </h6>
                                                 <table width="100%" class="data-panel">
                                                     <tr>
                                                         <td>Username</td>
@@ -114,7 +116,6 @@
                                                     </tr>
                                                     <tbody>
                                                         <?php foreach ($all_members as $am) { 
-
                                                             $saldo_xbot = $this->app->setSado($am->username,"XBOT");
                                                             $saldo_trx = $this->app->setSado($am->username,"TRX");
                                                             $saldo_doge = $this->app->setSado($am->username,"DOGE");
@@ -160,7 +161,7 @@
                                                             <td><?=$wd->coin ?></td>
                                                             <td><?=$wd->address ?></td>
                                                             <td><?=$wd->amount ?></td>
-                                                            <td><?=$wd->status ?></td>
+                                                            <td><?=$status ?></td>
                                                         </tr>
                                                     </tbody>
                                                     <?php } ?>

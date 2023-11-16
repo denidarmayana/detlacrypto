@@ -35,12 +35,18 @@ class Home_model extends CI_Model
     public function getDepositToday($coin)
     {
     	date_default_timezone_set("Asia/Jakarta");
-    	$data = $this->db->select_sum("balance")->like('created_at',date("Y-m-d"))->get_where("deposit",['coin'=>$coin])->row();
-    	if ($data) {
-    		return $data->balance;
-    	}else{
-    		return 0;
-    	}
+        $cek = $this->db->like('created_at',date("Y-m-d"))->get_where("deposit",['coin'=>$coin])->num_rows();
+        if ($cek > 0) {
+            $data = $this->db->select_sum("balance")->like('created_at',date("Y-m-d"))->get_where("deposit",['coin'=>$coin])->row();
+            if ($data) {
+                return $data->balance;
+            }else{
+                return 0;
+            }
+        }else{
+            return number_format(0,8);
+        }
+    	
     }
     public function getDepositAll($coin)
     {
