@@ -84,41 +84,45 @@ class Home extends MX_Controller
 		$profite_management = floatval($profite_keuntungan) - floatval($profile_reff);
 		$profit_owner = (floatval($profite_management)*60)/100;
 		$profit_team = (floatval($profite_management)*40)/100;
-		$new_profite = floatval($input['base']) + floatval($profite_untuk_user);
-		$balance = $this->db->select_sum("balance")->get_where("deposit",['username'=>$this->session->userdata("username"),'coin'=>$input['coin']])->row();
-		$trade = $this->db->select_sum("profite")->get_where("trading",['members'=>$this->session->userdata("username"),'coin'=>$input['coin']])->row();
-		$persen = ($balance->balance*20)/100;
-		if ($trade->profite >= $persen ) {
+		$new_profite = floatval($input['base']) + floatval($profite_keuntungan);
+		$trade = $this->db->like("created_at",date("Y-m-d"))->get_where("trading",['members'=>$this->session->userdata("username"),'coin'=>$input['coin']])->num_rows();
+		if ($trade >= 1000 ) {
 			$chance = $input['chance']/3;
 		}else{
 			$chance = $input['chance'];
 		}
-		if ($wining <= $chance ) {
-			$status = 1;
-			$profit_val = floatval($new_profite);
-			$users = $this->db->get_where("members",['username'=>$this->session->userdata("username")])->row();
-			$this->db->insert("sharing",[
-				'username'=>$this->session->userdata("username"),
-				'profit'=>$profit,
-				'upline'=>$profile_reff,
-				'team'=>$profit_team,
-				'owner'=>$profit_owner,
-				'users'=>$profite_untuk_user,
-				'coin'=>$input['coin'],
-			]);
-			$this->db->insert("reabet",[
-				'from'=>$this->session->userdata("username"),
-				'receive'=>$users->upline,
-				'amount'=>$profile_reff,
-				'coin'=>$input['coin'],
-			]);
+		if ($input['state'] == 1) {
+			if ($wining <= $chance ) {
+				$status = 1;
+				$profit_val = floatval($new_profite);
+				$users = $this->db->get_where("members",['username'=>$this->session->userdata("username")])->row();
+				$this->db->insert("sharing",[
+					'username'=>$this->session->userdata("username"),
+					'profit'=>$profit,
+					'upline'=>$profile_reff,
+					'team'=>$profit_team,
+					'owner'=>$profit_owner,
+					'users'=>$profite_untuk_user,
+					'coin'=>$input['coin'],
+				]);
+				$this->db->insert("reabet",[
+					'from'=>$this->session->userdata("username"),
+					'receive'=>$users->upline,
+					'amount'=>$profile_reff,
+					'coin'=>$input['coin'],
+				]);
+			}else{
+				$status = 0;
+				$profit_val = (0 - floatval($input['base']));
+			}
 		}else{
 			$status = 0;
 			$profit_val = (0 - floatval($input['base']));
 		}
+		
 		$this->db->insert("trading",[
 			'members'=>$this->session->userdata("username"),
-			'profite'=>$profit_val,
+			'profite'=>floatval($profite_keuntungan),
 			'coin'=>$input['coin'],
 		]);
 		echo json_encode([
@@ -126,7 +130,8 @@ class Home extends MX_Controller
 			'profite'=>number_format($profit_val,8),
 			'type'=>($input['type'] == 1 ? "HIGHT" : "LOW"),
 			'base'=>$input['base'],
-			'chance'=>$chance
+			'chance'=>$chance,
+			'state'=>$input['state']
 		]);
 	}
 	public function save_deposit()

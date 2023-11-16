@@ -44,7 +44,6 @@
                                         <option>XBOT</option>
                                         <option>TRX</option>
                                         <option>DOGE</option>
-                                        <option>BTT</option>
                                     </select>
                                 </div>
                             </div>

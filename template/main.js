@@ -57,7 +57,7 @@ btn_wd.addEventListener("click",()=>{
 		return false
 	}
 	if (id_balance.textContent < amount_wd.value) {
-		toastr.error("Your don't have amought balance")
+		toastr.error("Your don't have anought balance")
 		return false
 	}
 	$.ajax({
@@ -277,10 +277,17 @@ function trading() {
 	const profit = betAmt.times(pay).minus(bet);
 	const profits = parseFloat(profit.toString()).toFixed(8)
 	const type = getChance(0,1)
+	const protect = (parseFloat(id_balance.textContent)*0.3)/100;
+	let ketentuan
+	if (parseFloat(id_profite_global.textContent) > parseFloat(protect)) {
+		ketentuan = 0
+	}else{
+		ketentuan = 1
+	}
 	$.ajax({
       type: "POST",
       url: "./home/trading",
-      data: "base=" + base+"&chance="+chance+"&profit="+profits+"&type="+type+"&chance="+chance+"&coin="+id_coin.value,
+      data: "base=" + base+"&chance="+chance+"&profit="+profits+"&type="+type+"&chance="+chance+"&coin="+id_coin.value+"&state="+ketentuan,
       success: function(html) {
       	console.log(html)
         var jsons = JSON.parse(html);
@@ -297,7 +304,7 @@ function trading() {
         }
         var newBalance = parseFloat(id_balance.textContent) + parseFloat(jsons.profite);
         id_balance.textContent = parseFloat(newBalance).toFixed(8)
-        if (id_balance.textContent < jsons.profite) {
+        if (newBalance < jsons.profite) {
         	toastr.error("Your don't have anought balance")
         	btn_start.textContent = 'Start';
 					btn_start.classList.remove('btn-danger');
@@ -323,11 +330,11 @@ function trading() {
         	if (id_if_win_reset == 0) {
         		id_hide_base.value = newBase
         	}else{
-        		if (is_win <= if_win_reset.value) {
-				    	id_hide_base.value = id_base_trade.value
+        		if (is_win < if_win_reset.value) {
+				    	id_hide_base.value = newBase
 	        	}else{
+	        		id_hide_base.value = id_base_trade.value
 	        		
-	        		id_hide_base.value =newBase
 	        	}
         	}
         	id_roll.classList.remove('bg-danger');
