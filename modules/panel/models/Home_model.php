@@ -32,15 +32,25 @@ class Home_model extends CI_Model
         $pecahkan = explode('-', $tanggal);
         return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0]. " ".date("H:i:s");
     }
-    public function getDeposit($username,$coin)
+    public function getDepositToday($coin)
     {
     	date_default_timezone_set("Asia/Jakarta");
-    	$data = $this->db->select_sum("balance")->get_where("deposit",['coin'=>$coin,'username'=>$username])->row();
+    	$data = $this->db->select_sum("balance")->like('created_at',date("Y-m-d"))->get_where("deposit",['coin'=>$coin])->row();
     	if ($data) {
     		return $data->balance;
     	}else{
     		return 0;
     	}
+    }
+    public function getDepositAll($coin)
+    {
+        date_default_timezone_set("Asia/Jakarta");
+        $data = $this->db->select_sum("balance")->get_where("deposit",['coin'=>$coin])->row();
+        if ($data) {
+            return $data->balance;
+        }else{
+            return 0;
+        }
     }
     public function getTrading($username,$coin)
     {

@@ -42,12 +42,12 @@
                                                     <tr>
                                                         <td width="10%"><img src="https://indodax.com/v2/logo//png/color/trx.png" width="25"> </td>
                                                         <td valign="middle" width="60%"><h6 class="m-0">TRON</h6></td>
-                                                        <td valign="middle" width="20%">10.00000000</td>
+                                                        <td valign="middle" width="20%"><?=$this->app->getDepositToday("TRX") ?></td>
                                                     </tr>
                                                     <tr>
                                                         <td width="10%"><img src="https://indodax.com/v2/logo//png/color/doge.png" width="25"> </td>
                                                         <td valign="middle" width="60%"><h6 class="m-0">DOGE</h6></td>
-                                                        <td valign="middle" width="20%">10.00000000</td>
+                                                        <td valign="middle" width="20%"><?=$this->app->getDepositToday("DOGE") ?></td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -63,12 +63,12 @@
                                                     <tr>
                                                         <td width="10%"><img src="https://indodax.com/v2/logo//png/color/trx.png" width="25"> </td>
                                                         <td valign="middle" width="60%"><h6 class="m-0">TRON</h6></td>
-                                                        <td valign="middle" width="20%">10.00000000</td>
+                                                        <td valign="middle" width="20%"><?=$this->app->getDepositAll("TRX") ?></td>
                                                     </tr>
                                                     <tr>
                                                         <td width="10%"><img src="https://indodax.com/v2/logo//png/color/doge.png" width="25"> </td>
                                                         <td valign="middle" width="60%"><h6 class="m-0">DOGE</h6></td>
-                                                        <td valign="middle" width="20%">10.00000000</td>
+                                                        <td valign="middle" width="20%"><?=$this->app->getDepositAll("TRX") ?></td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -148,7 +148,13 @@
                                                         <td>Status</td>
                                                     </tr>
                                                     <tbody>
-                                                        <?php foreach ($withdrawl as $wd) {  ?>
+                                                        <?php foreach ($withdrawl as $wd) {  
+                                                            if ($wd->status == 0) {
+                                                                $status = "<button class='btn btn-info btn-sm'>Approve</button>";
+                                                            }else{
+                                                                $status = "Done";
+                                                            }
+                                                        ?>
                                                         <tr>
                                                             <td><?=$wd->members ?></td>
                                                             <td><?=$wd->coin ?></td>
@@ -170,23 +176,8 @@
                                     <div class="col-12">
                                         <div class="card p-0 mt-1 mb-2">
                                             <div class="card-body m-0 p-2 table-responsive">
-                                                <h6 class="card-title fw-600 m-0 mb-1">Withdrawl </h6>
-                                                <table width="100%" class="data-panel">
-                                                    <tr>
-                                                        <td>Username</td>
-                                                        <td>Coin</td>
-                                                        <td>Amount</td>
-                                                        <td>Status</td>
-                                                    </tr>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>deni020988</td>
-                                                            <td>DOGE</td>
-                                                            <td>0.00000000</td>
-                                                            <td></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                <h7 class="card-title fw-600 m-0 mb-1">SharingAfiliator </h7>
+                                                
                                             </div>
                                         </div>
                                     </div>
