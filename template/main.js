@@ -43,6 +43,8 @@ const btn_claim = document.getElementById('claim');
 const btn_logout = document.getElementById('logout');
 const btn_wd = document.getElementById('btn_wd');
 
+let ketentuan
+
 btn_wd.addEventListener("click",()=>{
 	if (address_wd.value.length == 0) {
 		toastr.error("Address Wallet for withdrawl can't be empty")
@@ -278,7 +280,7 @@ function trading() {
 	const profits = parseFloat(profit.toString()).toFixed(8)
 	const type = getChance(0,1)
 	const protect = (parseFloat(id_balance.textContent)*0.3)/100;
-	let ketentuan
+	
 	if (parseFloat(id_profite_global.textContent) > parseFloat(protect)) {
 		ketentuan = 0
 	}else{
@@ -410,6 +412,7 @@ btn_stop.addEventListener("click",(event)=>{
 	is_stop = true
 })
 btn_shoot.addEventListener("click",(event)=>{
+	ketentuan = 0
 	if (id_balance.textContent > id_val_shoot.value) {
 		id_hide_base.value = id_val_shoot.value
 	}else{
@@ -418,9 +421,11 @@ btn_shoot.addEventListener("click",(event)=>{
 	
 })
 btn_reset.addEventListener("click",(event)=>{
+	ketentuan = 0
 	id_hide_base.value = id_base_trade.value
 })
 btn_boom.addEventListener("click",(event)=>{
+	ketentuan = 0
 	if (id_balance.textContent > id_val_boom.value) {
 		id_hide_base.value = id_val_boom.value	
 	}else{
