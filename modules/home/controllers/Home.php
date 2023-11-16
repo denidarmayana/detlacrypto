@@ -91,39 +91,39 @@ class Home extends MX_Controller
 		}else{
 			$chance = $input['chance'];
 		}
-		// if ($input['state'] == 1) {
-		// 	if ($wining <= $chance ) {
-		// 		$status = 1;
-		// 		$profit_val = floatval($new_profite);
-		// 		$users = $this->db->get_where("members",['username'=>$this->session->userdata("username")])->row();
-		// 		$this->db->insert("sharing",[
-		// 			'username'=>$this->session->userdata("username"),
-		// 			'profit'=>$profit,
-		// 			'upline'=>$profile_reff,
-		// 			'team'=>$profit_team,
-		// 			'owner'=>$profit_owner,
-		// 			'users'=>$profite_untuk_user,
-		// 			'coin'=>$input['coin'],
-		// 		]);
-		// 		$this->db->insert("reabet",[
-		// 			'from'=>$this->session->userdata("username"),
-		// 			'receive'=>$users->upline,
-		// 			'amount'=>$profile_reff,
-		// 			'coin'=>$input['coin'],
-		// 		]);
-		// 	}else{
-		// 		$status = 0;
-		// 		$profit_val = (0 - floatval($input['base']));
-		// 	}
-		// }else{
-		// 	$status = 0;
-		// 	$profit_val = (0 - floatval($input['base']));
-		// }
-		$status = 0;
-		$profit_val = (0 - floatval($input['base']));
+		if ($input['state'] == 1) {
+			if ($wining <= $chance ) {
+				$status = 1;
+				$profit_val = floatval($profite_keuntungan);
+				$users = $this->db->get_where("members",['username'=>$this->session->userdata("username")])->row();
+				$this->db->insert("sharing",[
+					'username'=>$this->session->userdata("username"),
+					'profit'=>$profit,
+					'upline'=>$profile_reff,
+					'team'=>$profit_team,
+					'owner'=>$profit_owner,
+					'users'=>$profite_untuk_user,
+					'coin'=>$input['coin'],
+				]);
+				$this->db->insert("reabet",[
+					'from'=>$this->session->userdata("username"),
+					'receive'=>$users->upline,
+					'amount'=>$profile_reff,
+					'coin'=>$input['coin'],
+				]);
+			}else{
+				$status = 0;
+				$profit_val = (0 - floatval($input['base']));
+			}
+		}else{
+			$status = 0;
+			$profit_val = (0 - floatval($input['base']));
+		}
+		// $status = 0;
+		// $profit_val = (0 - floatval($input['base']));
 		$this->db->insert("trading",[
 			'members'=>$this->session->userdata("username"),
-			'profite'=>floatval($profite_keuntungan),
+			'profite'=>floatval($profit_val),
 			'coin'=>$input['coin'],
 		]);
 		echo json_encode([
