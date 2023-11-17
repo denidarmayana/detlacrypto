@@ -80,13 +80,14 @@ btn_wd.addEventListener("click",()=>{
 	})
 })
 
-const wss = new WebSocket('wss://socket.pasino.io/dice/');
+const wss = new WebSocket('wss://deltacrypto.biz.id:7575/wss');
 let coins;
 wss.addEventListener('open', () => {
   wss.send(JSON.stringify({method:"initialization",socket_token:id_socket.value}))
 });
 
 wss.addEventListener('message', (event) => {
+	console.log(event.data)
   const message = event.data;
   var json = JSON.parse(message);
   if (json.action == "update_balance") {
