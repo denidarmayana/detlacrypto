@@ -80,7 +80,7 @@ btn_wd.addEventListener("click",()=>{
 	})
 })
 
-const wss = new WebSocket('wss://deltacrypto.biz.id:7575/wss');
+const wss = new WebSocket('wss://deltacrypto.biz.id/pasino/wss');
 let coins;
 wss.addEventListener('open', () => {
   wss.send(JSON.stringify({method:"initialization",socket_token:id_socket.value}))

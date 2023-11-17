@@ -48,18 +48,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
     <script type="text/javascript">  
-      const wss = new WebSocket('ws://deltacrypto.biz.id:7575/wss');
-      let coins;
-      wss.addEventListener('open', () => {
-        console.log("Connected")
-        wss.send(JSON.stringify({method:"initialization",socket_token:"207e3ddf1440f14e83041da01d28906f5a684884b51a02bb3c4890d7a996306b"}))
-      });
-
-      wss.addEventListener('message', (event) => {
-        console.log(event.data)
-      });
-
-
+      
       $("#login").submit(function() {
         var username = $("#username").val()
         var password = $("#password").val()
