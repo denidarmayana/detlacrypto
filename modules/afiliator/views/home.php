@@ -151,7 +151,7 @@
                             $wd_doge = $this->app->getAllWD("DOGE");
                             $wd_trx = $this->app->getAllWD("TRX");
                             $sisa_doge = (floatval($minus_doge_all)-floatval($wd_doge));
-                            $sisa_doge = (floatval($minus_trx_all)-floatval($wd_trx));
+                            $sisa_trx = (floatval($minus_trx_all)-floatval($wd_trx));
                             $bagi_doge = floatval($sisa_doge)*(40/100);
                             $bagi_trx = floatval($sisa_trx)*(40/100);
                             ?>
