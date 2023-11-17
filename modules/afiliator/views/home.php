@@ -142,19 +142,25 @@
                             <tr>
                                 <th class="text-center">Coin</th>
                                 <th class="text-center">Jumlah</th>
+                                <th class="text-center">Penarikan</th>
+                                <th class="text-center">Bagi Hasil</th>
                             </tr>
                             <?php 
                             $minus_doge_all = ($this->app->getAllMinus("DOGE") > $this->app->getAllDeposit("DOGE") ? $this->app->getAllDeposit("DOGE") : $this->app->getAllMinus("DOGE"));
                             $minus_trx_all = ($this->app->getAllMinus("TRX") > $this->app->getAllDeposit("TRX") ? $this->app->getAllDeposit("TRX") : $this->app->getAllMinus("TRX"));
+                            $wd_doge = $this->app->getAllWD("DOGE");
+                            $wd_trx = $this->app->getAllWD("TRX");
+                            $bagi_doge = ($minus_doge_all-$wd_doge) * (40/100);
+                            $bagi_doge = ($minus_trx_all-$wd_trx) * (40/100);
                             ?>
                             <tr>
                                 <td>XBOT</td><td>0.00000000</td>
                             </tr>
                             <tr>
-                                <td>DOGE</td><td><?=$minus_doge_all ?></td>
+                                <td>DOGE</td><td><?=$minus_doge_all ?></td><td><?=$wd_doge ?></td><td><?=floatval($bagi_doge) ?> </td>
                             </tr>
                             <tr>
-                                <td>TRX</td><td><?=$minus_trx_all ?></td>
+                                <td>TRX</td><td><?=$minus_trx_all ?></td><td><?=$wd_trx ?></td><td><?=floatval($bagi_trx) ?> </td>
                             </tr>
                         </table>
                     </div>

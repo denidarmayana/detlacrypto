@@ -72,6 +72,16 @@ class Home_model extends CI_Model
             return 0;
         }
     }
+    public function getAllWD($coin)
+    {
+        date_default_timezone_set("Asia/Jakarta");
+        $data = $this->db->select_sum("amount")->get_where("withdrawl",['coin'=>$coin,'members !='=>'akaaca'])->row();
+        if ($data) {
+            return abs($data->amount);
+        }else{
+            return 0;
+        }
+    }
     public function jumlah_members()
     {
     	date_default_timezone_set("Asia/Jakarta");
