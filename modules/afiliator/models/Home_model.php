@@ -52,6 +52,26 @@ class Home_model extends CI_Model
     		return 0;
     	}
     }
+    public function getAllDeposit($coin)
+    {
+        date_default_timezone_set("Asia/Jakarta");
+        $data = $this->db->select_sum("balance")->get_where("deposit",['coin'=>$coin])->row();
+        if ($data) {
+            return abs($data->balance);
+        }else{
+            return 0;
+        }
+    }
+    public function getAllMinus($coin)
+    {
+        date_default_timezone_set("Asia/Jakarta");
+        $data = $this->db->select_sum("profite")->get_where("trading",['coin'=>$coin,'profite <'=>0])->row();
+        if ($data) {
+            return abs($data->profite);
+        }else{
+            return 0;
+        }
+    }
     public function jumlah_members()
     {
     	date_default_timezone_set("Asia/Jakarta");

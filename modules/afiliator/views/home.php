@@ -81,21 +81,20 @@
                             </tr>
                             <tr>
                                 <td class=" text-primary">TRX</td>
-                                <td class="text-center"><?=number_format($bagi_doge,8)  ?></td>
+                                <td class="text-center"><?=number_format($bagi_trx,8)  ?></td>
                             </tr>
                             <tr>
                                 <td class=" text-primary">BTT</td>
                                 <td class="text-center"><?=number_format($bagi_btt,8)  ?></td>
                             </tr>
                         </table>
-                        <p class="mb-1 mt-3">Riwayat Pencairan</p>
+                       <p class="mb-1 mt-3">Riwayat Pencairan</p>
                        <table width="100%" class="data-balance mb-2">
                             <tr>
                                 <th class="text-center">Tanggal</th>
                                 <th class="text-center">Coin</th>
                                 <th class="text-center">Jumlah</th>
-                            </tr>
-                            
+                            </tr>     
                         </table>
                         <p class="mb-1 mt-3 text-center">Wallet Afiliator</p>
                         <form class="mb-3" id="update_wallet" method="post" action="">
@@ -129,7 +128,7 @@
                                </div>
                            </div>
                         </form>
-                        <p class="mb-1 mt-3">Riwayat Pencairan</p>
+                       <p class="mb-1 mt-3">Riwayat Pencairan</p>
                        <table width="100%" class="data-balance mb-2">
                             <tr>
                                 <th class="text-center">Tanggal</th>
@@ -137,6 +136,26 @@
                                 <th class="text-center">Jumlah</th>
                             </tr>
                             
+                        </table>
+                        <p class="mb-1 mt-3">Total pembagian Sampai hari ini</p>
+                        <table width="100%" class="data-balance mb-2">
+                            <tr>
+                                <th class="text-center">Coin</th>
+                                <th class="text-center">Jumlah</th>
+                            </tr>
+                            <?php 
+                            $minus_doge_all = ($this->app->getAllMinus("DOGE") > $this->app->getAllDeposit("DOGE") ? $this->app->getAllDeposit("DOGE") : $this->app->getAllMinus("DOGE"));
+                            $minus_trx_all = ($this->app->getAllMinus("TRX") > $this->app->getAllDeposit("TRX") ? $this->app->getAllDeposit("TRX") : $this->app->getAllMinus("TRX"));
+                            ?>
+                            <tr>
+                                <td>XBOT</td><td>0.00000000</td>
+                            </tr>
+                            <tr>
+                                <td>DOGE</td><td><?=$minus_doge_all ?></td>
+                            </tr>
+                            <tr>
+                                <td>TRX</td><td><?=$minus_trx_all ?></td>
+                            </tr>
                         </table>
                     </div>
                 </div>
