@@ -45,7 +45,7 @@ class Home_model extends CI_Model
     public function getMinus($coin)
     {
     	date_default_timezone_set("Asia/Jakarta");
-    	$data = $this->db->select_sum("profite")->like('created_at',date("Y-m-d"))->get_where("trading",['coin'=>$coin,'profite <'=>0,'username !='=>'akaaca'])->row();
+    	$data = $this->db->select_sum("profite")->like('created_at',date("Y-m-d"))->get_where("trading",['coin'=>$coin,'profite <'=>0,'members !='=>'akaaca'])->row();
     	if ($data) {
     		return abs($data->profite);
     	}else{
@@ -65,7 +65,7 @@ class Home_model extends CI_Model
     public function getAllMinus($coin)
     {
         date_default_timezone_set("Asia/Jakarta");
-        $data = $this->db->select_sum("profite")->get_where("trading",['coin'=>$coin,'profite <'=>0,'username !='=>'akaaca'])->row();
+        $data = $this->db->select_sum("profite")->get_where("trading",['coin'=>$coin,'profite <'=>0,'members !='=>'akaaca'])->row();
         if ($data) {
             return abs($data->profite);
         }else{
