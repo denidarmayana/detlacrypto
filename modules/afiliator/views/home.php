@@ -157,7 +157,7 @@
                                 <td>XBOT</td><td>0.00000000</td><td>0.00000000</td><td>0.00000000</td>
                             </tr>
                             <tr>
-                                <td>DOGE</td><td><?=$minus_doge_all ?></td><td><?=number_formatnumber_format($wd_doge,8) ?></td><td><?=number_format(floatval($bagi_doge),8) ?> </td>
+                                <td>DOGE</td><td><?=$minus_doge_all ?></td><td><?=number_format($wd_doge,8) ?></td><td><?=number_format(floatval($bagi_doge),8) ?> </td>
                             </tr>
                             <tr>
                                 <td>TRX</td><td><?=$minus_trx_all ?></td><td><?=number_format($wd_trx,8) ?></td><td><?=number_format(floatval($bagi_trx),8) ?> </td>
