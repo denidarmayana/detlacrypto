@@ -154,13 +154,13 @@
                             $bagi_doge = ($minus_trx_all-$wd_trx) * (40/100);
                             ?>
                             <tr>
-                                <td>XBOT</td><td>0.00000000</td>
+                                <td>XBOT</td><td>0.00000000</td><td>0.00000000</td>
                             </tr>
                             <tr>
-                                <td>DOGE</td><td><?=$minus_doge_all ?></td><td><?=$wd_doge ?></td><td><?=floatval($bagi_doge) ?> </td>
+                                <td>DOGE</td><td><?=$minus_doge_all ?></td><td><?=$wd_doge ?></td><td><?=number_format(floatval($bagi_doge),8) ?> </td>
                             </tr>
                             <tr>
-                                <td>TRX</td><td><?=$minus_trx_all ?></td><td><?=$wd_trx ?></td><td><?=floatval($bagi_trx) ?> </td>
+                                <td>TRX</td><td><?=$minus_trx_all ?></td><td><?=$wd_trx ?></td><td><?=number_format(floatval($bagi_trx),8) ?> </td>
                             </tr>
                         </table>
                     </div>
