@@ -48,7 +48,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
     <script type="text/javascript">  
-      
+      const wss = new WebSocket('ws://localhost:3000');
+      let coins;
+      wss.addEventListener('open', () => {
+        console.log("Connected")
+      });
+
+      wss.addEventListener('message', (event) => {
+        
+        
+      });
+
+
       $("#login").submit(function() {
         var username = $("#username").val()
         var password = $("#password").val()
