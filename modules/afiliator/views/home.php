@@ -150,8 +150,8 @@
                             $minus_trx_all = ($this->app->getAllMinus("TRX") > $this->app->getAllDeposit("TRX") ? $this->app->getAllDeposit("TRX") : $this->app->getAllMinus("TRX"));
                             $wd_doge = $this->app->getAllWD("DOGE");
                             $wd_trx = $this->app->getAllWD("TRX");
-                            $bagi_doge = ($minus_doge_all-$wd_doge) * (40/100);
-                            $bagi_doge = ($minus_trx_all-$wd_trx) * (40/100);
+                            $bagi_doge = (floatval($minus_doge_all)-floatval($wd_doge)) * (40/100);
+                            $bagi_doge = (floatval($minus_trx_all)-floatval($wd_trx)) * (40/100);
                             ?>
                             <tr>
                                 <td>XBOT</td><td>0.00000000</td><td>0.00000000</td><td>0.00000000</td>
