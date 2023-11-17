@@ -35,7 +35,7 @@ class Home_model extends CI_Model
     public function getDeposit($coin)
     {
     	date_default_timezone_set("Asia/Jakarta");
-    	$data = $this->db->select_sum("balance")->like('created_at',date("Y-m-d"))->get_where("deposit",['coin'=>$coin,'username !='=>'akaaca',,'username !='=>'donisis'])->row();
+    	$data = $this->db->select_sum("balance")->like('created_at',date("Y-m-d"))->get_where("deposit",['coin'=>$coin,'username !='=>'akaaca','username !='=>'donisis'])->row();
     	if ($data) {
     		return abs($data->balance);
     	}else{
