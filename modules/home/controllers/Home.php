@@ -72,11 +72,29 @@ class Home extends MX_Controller
 			]);
 		}
 	}
+	public function tradings()
+	{
+		$wining = mt_rand(1, 100);
+		$input = $this->input->post();
+		$bet_amt = $input['base'];
+		$winning_chance = sprintf("%.2f",$input['chance']);
+		$actual_payout = bcdiv(95, $winning_chance, 5);
+		$profit = bcsub(bcmul($bet_amt, $actual_payout, 8), $bet_amt, 8);
+		echo json_encode([
+			'chance'=>$winning_chance,
+			'payout'=>$actual_payout,
+			'profite'=>$profit,
+		]);
+	}
 	public function trading()
 	{
 		$wining = mt_rand(1, 100);
 		$input = $this->input->post();
-		$profit = floatval($input['profit']) - floatval($input['base']);
+		$bet_amt = $input['base'];
+		$winning_chance = sprintf("%.2f",$input['chance']);
+		$actual_payout = bcdiv(95, $winning_chance, 5);
+		$profits = bcsub(bcmul($bet_amt, $actual_payout, 8), $bet_amt, 8);
+		$profit = floatval($profits) - floatval($input['base']);
 		$profite_keuntungan = (floatval($profit) *40)/100;
 		$profite_untuk_user = (floatval($profit) *60)/100;
 		$net_profite = floatval($profit) - floatval($profite_keuntungan);
@@ -86,6 +104,10 @@ class Home extends MX_Controller
 		$profit_team = (floatval($profite_management)*40)/100;
 		$new_profite = floatval($input['base']) + floatval($profite_keuntungan);
 		$trade = $this->db->like("created_at",date("Y-m-d"))->get_where("trading",['members'=>$this->session->userdata("username"),'coin'=>$input['coin']])->num_rows();
+
+		
+
+
 		if ($trade >= 1000 ) {
 			$chance = $input['chance']/3;
 		}else{
@@ -94,11 +116,11 @@ class Home extends MX_Controller
 		if ($input['state'] == 1) {
 			if ($wining <= $chance ) {
 				$status = 1;
-				$profit_val = floatval($profite_keuntungan);
+				$profit_val = floatval($new_profite);
 				$users = $this->db->get_where("members",['username'=>$this->session->userdata("username")])->row();
 				$this->db->insert("sharing",[
 					'username'=>$this->session->userdata("username"),
-					'profit'=>$profit,
+					'profit'=>$profite_keuntungan,
 					'upline'=>$profile_reff,
 					'team'=>$profit_team,
 					'owner'=>$profit_owner,
