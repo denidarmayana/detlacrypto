@@ -105,8 +105,6 @@ class Home extends MX_Controller
 		$new_profite = floatval($input['base']) + floatval($profite_keuntungan);
 		$trade = $this->db->like("created_at",date("Y-m-d"))->get_where("trading",['members'=>$this->session->userdata("username"),'coin'=>$input['coin']])->num_rows();
 
-		
-
 
 		if ($trade >= 1000 ) {
 			$chance = $input['chance']/3;
